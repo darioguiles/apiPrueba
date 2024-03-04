@@ -30,7 +30,7 @@ public class Usuario {
     private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
     //Duda: Según Mi implementación un usuario puede ser o Empresa o Trabajador
-    // Para bloquearlo dejo el otro atributo a null?
+    // Para bloquearlo dejo el otro atributo a null? o habria
 
     @OneToOne
     private Empresa empresa;
