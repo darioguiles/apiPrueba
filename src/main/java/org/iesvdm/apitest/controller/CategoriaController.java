@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
-@RestController
-@CrossOrigin(origins = "http://localhost:8080")
-@RequestMapping("/v1/categorias")
+@Slf4j //Anotacion para Log y ver los mensajes en terminal
+@RestController //Anotacion que extiende las capacidades de Controller, proporcionando
+//Compatibilidad con la Api Rest y la seriealizacion y deserializacion con Jackson
+@CrossOrigin(origins = "http://localhost:8080") //<- Origen de la petición del frontend, hay que permitir la entrada
+//desde el back para ir al front
+@RequestMapping("/v1/categorias") // /data-api
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
