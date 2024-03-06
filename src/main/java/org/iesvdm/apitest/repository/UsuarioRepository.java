@@ -17,4 +17,3 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 */
 }
 
-// '' OR 1=1;

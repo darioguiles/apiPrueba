@@ -28,13 +28,12 @@ public class UsuarioController {
 
     @GetMapping(value = {"","/"}) //Usuario
     public List<Usuario> all() {
-        log.info("Accediendo a todas las películas");
+        log.info("Accediendo a todas los usuarios");
         return this.usuarioService.all();
     }
 
-
     @PostMapping({"","/"})
-    public Usuario newCategoria(@RequestBody Usuario usuario) {
+    public Usuario newUsuario(@RequestBody Usuario usuario) {
         return this.usuarioService.save(usuario);
     }
 
