@@ -28,7 +28,7 @@ public class EmpresaController {
     }
 
     @PostMapping({"","/"})
-    public Empresa newUsuario(@RequestBody Empresa empresa) {
+    public Empresa newEmpresa(@RequestBody Empresa empresa) {
         return this.empresaService.save(empresa);
     }
 
@@ -38,7 +38,7 @@ public class EmpresaController {
     }
 
     @PutMapping("/{id}")
-    public Empresa replaceUsuario(@PathVariable("id") Long id, @RequestBody Empresa empresa) {
+    public Empresa replaceEmpresa(@PathVariable("id") Long id, @RequestBody Empresa empresa) {
         return this.empresaService.replace(id, empresa);
     }
 
@@ -46,7 +46,7 @@ public class EmpresaController {
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable("id") Long id) {
+    public void deleteEmpresa(@PathVariable("id") Long id) {
         this.empresaService.delete(id);
     }
 
