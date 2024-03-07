@@ -29,7 +29,7 @@ public class TrabajadorController {
     }
 
     @PostMapping({"","/"})
-    public Trabajador newUsuario(@RequestBody Trabajador trabajador) {
+    public Trabajador newTrabajador(@RequestBody Trabajador trabajador) {
         return this.trabajadorService.save(trabajador);
     }
 
@@ -39,7 +39,7 @@ public class TrabajadorController {
     }
 
     @PutMapping("/{id}")
-    public Trabajador replaceUsuario(@PathVariable("id") Long id, @RequestBody Trabajador trabajador) {
+    public Trabajador replaceTrabajador(@PathVariable("id") Long id, @RequestBody Trabajador trabajador) {
         return this.trabajadorService.replace(id, trabajador);
     }
 
@@ -47,7 +47,7 @@ public class TrabajadorController {
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable("id") Long id) {
+    public void deleteTrabajador(@PathVariable("id") Long id) {
         this.trabajadorService.delete(id);
     }
 
