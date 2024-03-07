@@ -1,8 +1,6 @@
 package org.iesvdm.apitest.service;
 
-import org.iesvdm.apitest.domain.Categoria;
 import org.iesvdm.apitest.domain.Usuario;
-import org.iesvdm.apitest.exception.CategoriaNotFoundException;
 import org.iesvdm.apitest.exception.UsuarioNotFoundException;
 import org.iesvdm.apitest.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
