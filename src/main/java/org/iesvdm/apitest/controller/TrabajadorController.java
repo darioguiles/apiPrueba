@@ -25,7 +25,7 @@ public class TrabajadorController {
         this.trabajadorService = trabajadorService;
     }
 
-    @GetMapping(value = {"","/"}, params = {"!buscar", "!ordenar", "!pagina", "!tamanio"}) //Usuario
+    @GetMapping(value = {"","/"}, params = {"!buscar", "!ordenar", "!pagina", "!tamanio"})
     public List<Trabajador> all() {
         log.info("Accediendo a todas los trabajadores");
         return this.trabajadorService.all();
