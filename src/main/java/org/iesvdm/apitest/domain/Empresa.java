@@ -25,6 +25,7 @@ public class Empresa {
     private String telefono;
     
     @OneToOne
+
     private Usuario usuario;
 
 }

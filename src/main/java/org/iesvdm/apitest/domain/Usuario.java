@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
