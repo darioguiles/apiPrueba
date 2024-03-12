@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Empresa {
     private String telefono;
     
     @OneToOne
+    @JsonIgnore
     private Usuario usuario;
 
 }

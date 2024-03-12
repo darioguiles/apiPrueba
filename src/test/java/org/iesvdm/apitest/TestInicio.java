@@ -33,9 +33,18 @@ public class TestInicio {
         Empresa e = new Empresa(0, "Oracle","Empresa de desarrollo de software","+408",null);
         empresaRepository.save(e);
 
+        u1.setTrabajador(t);
+        t.setUsuario(u1);
+        u2.setEmpresa(e);
+        e.setUsuario(u2);
+        usuarioRepository.save(u1);
+        trabajadorRepository.save(t);
+        usuarioRepository.save(u2);
+        empresaRepository.save(e);
+                                                                                                                        
 
 
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     }
 }
 
