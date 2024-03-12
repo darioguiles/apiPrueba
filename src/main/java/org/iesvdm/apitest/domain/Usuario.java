@@ -22,6 +22,8 @@ public class Usuario {
     private String nom_usuario; // <--
 
     private String correo; // <-- Ambos de estos campos serán equivalentes al hacer un login
+    //Podemos tener un hashcode de nom_usuario y correo puesto que estos son los campos que definen el login
+    //DEBEN ser únicos e irrepetible.
 
     private String contrasenia;
 
@@ -31,7 +33,7 @@ public class Usuario {
     private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
     //Duda: Según Mi implementación un usuario puede ser o Empresa o Trabajador
-    // Para bloquearlo dejo el otro atributo a null? o habria
+    // Para bloquearlo dejo el otro atributo a null? o habria Solucionado: dejandolo a null está bien.
 
     @OneToOne
     private Empresa empresa;
