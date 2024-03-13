@@ -59,6 +59,10 @@
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
             http://localhost:8080/swagger-ui/index.html
         -->
+
+        <!--
+        http://localhost:8080/data-api/explorer/index.html#uri=/data-api
+        -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-rest-hal-explorer</artifactId>

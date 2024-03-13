@@ -3,6 +3,7 @@ package org.iesvdm.apitest.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.Trabajador;
 import org.iesvdm.apitest.service.TrabajadorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 //desde el back para ir al front
 @RequestMapping("/v1/data-api/trabajadores")
 public class TrabajadorController {
+
 
     private final TrabajadorService trabajadorService;
 
@@ -42,7 +44,7 @@ public class TrabajadorController {
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<Trabajador> all(@RequestParam("buscar") Optional<String> buscarOpc
             , @RequestParam("ordenar") Optional<String> ordenarOpt) {
-        log.info("Accediendo a todas las categorias con filtro buscar: %s y ordenar");
+        log.info("Accediendo a todas los trabajadores con filtro buscar: %s y ordenar");
         buscarOpc.orElse("VOID");
         ordenarOpt.orElse("VOID");
 

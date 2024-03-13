@@ -44,6 +44,32 @@ public class TestInicio {
                                                                                                                         
 
 
+        /*
+
+        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        usuarioRepository.save(u1);
+        Usuario u2 = new Usuario(0, "Mr.Oracle","u@a.com","password","",false,null,null);
+        usuarioRepository.save(u2);
+
+        Trabajador t = new Trabajador(0, "Dario","Guiles","Primer Trabajador","610",null);
+        trabajadorRepository.save(t);
+
+        Trabajador t1 = new Trabajador(0, "Dario2","Guiles","Primer Trabajador","610",null);
+        trabajadorRepository.save(t1);
+
+        u1.setTrabajador(t1);
+        usuarioRepository.save(u1);
+
+        t1.setUsuario(u1);
+        trabajadorRepository.save(t1);
+
+        u2.setTrabajador(t);
+        usuarioRepository.save(u2);
+
+        t.setUsuario(u2);
+        trabajadorRepository.save(t);
+        */
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     }
 }
