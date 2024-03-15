@@ -67,9 +67,6 @@ public class UsuarioController {
         } else if (this.usuarioService.one(id).getTrabajador().getId_trabajador()==id) {
             this.trabajadorService.delete(id);
         }
-        //Esta implementación conlleva Que el ID, del usuario es el mismo que el del trabajador/empresa
-        //lo cual puede ser que no ocurra
-
 
         this.usuarioService.delete(id);
     }
