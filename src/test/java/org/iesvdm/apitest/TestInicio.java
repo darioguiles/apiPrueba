@@ -23,6 +23,10 @@ public class TestInicio {
     @Test
     void contextLoads() {
 
+        /*
+        * Ejemplo de implementacion, tenemos la clase usuario vacia, y cuando alguien utiliza la aplicacion
+        * y crea un usuario
+        * */
 
         Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);

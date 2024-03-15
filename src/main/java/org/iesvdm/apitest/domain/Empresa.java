@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class Empresa {
     private String telefono;
     
     @OneToOne
-    @JsonIgnore
+    @JsonBackReference
     private Usuario usuario;
 
     public Empresa(String nombre, String descripcion, String telefono, Usuario usuario) {
