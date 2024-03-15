@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,9 +34,11 @@ public class Usuario {
     private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
     @OneToOne
+    @JsonManagedReference
     private Empresa empresa;
 
     @OneToOne
+    @JsonManagedReference
     private Trabajador trabajador;
 
     //Constructor Usuario SIN ruta img (Img por defecto)
