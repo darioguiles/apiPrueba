@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Empresa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long id_empresa;
 
@@ -29,4 +28,11 @@ public class Empresa {
     @JsonIgnore
     private Usuario usuario;
 
+    public Empresa(String nombre, String descripcion, String telefono, Usuario usuario) {
+        this.id_empresa=usuario.getId_usuario();
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.telefono = telefono;
+        this.usuario = usuario;
+    }
 }

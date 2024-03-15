@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Trabajador {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long id_trabajador;
 
@@ -32,4 +31,13 @@ public class Trabajador {
     private Usuario usuario;
     // COINCIDEN LOS IDs
 
+
+    public Trabajador(String nombre, String apellidos, String informacion, String telefono, Usuario usuario) {
+        this.id_trabajador=usuario.getId_usuario();
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.informacion = informacion;
+        this.telefono = telefono;
+        this.usuario = usuario;
+    }
 }
