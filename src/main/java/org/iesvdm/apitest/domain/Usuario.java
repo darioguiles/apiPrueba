@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Usar estilo nuevo
@@ -20,7 +21,7 @@ public class Usuario {
     @EqualsAndHashCode.Include
     private long id_usuario;
 
-    private String nom_usuario; // <--
+    private String nom_usuario; // <-- Asegurar esto y hashear de alguna manera, también que sean validos en login
 
     private String correo; // <-- Ambos de estos campos serán equivalentes al hacer un login
     //Podemos tener un hashcode de nom_usuario y correo puesto que estos son los campos que definen el login
@@ -35,10 +36,12 @@ public class Usuario {
 
     @OneToOne
     @JsonManagedReference
+    @ToStringExclude
     private Empresa empresa;
 
     @OneToOne
     @JsonManagedReference
+    @ToStringExclude
     private Trabajador trabajador;
 
     //Constructor Usuario SIN ruta img (Img por defecto)
@@ -52,8 +55,5 @@ public class Usuario {
         // empresa y trabajador se inicializarán a null automáticamente
     }
 
-
-    //Duda: Según Mi implementación un usuario puede ser o Empresa o Trabajador
-    // Para bloquearlo dejo el otro atributo a null? o habria Solucionado: dejandolo a null está bien.
 
 }

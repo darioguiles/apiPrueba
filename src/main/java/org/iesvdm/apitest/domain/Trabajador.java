@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.Set;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Usar estilo nuevo
@@ -30,6 +34,14 @@ public class Trabajador {
     @JsonBackReference
     private Usuario usuario;
     // COINCIDEN LOS IDs
+
+    //orphanRemoval = true
+    //Esta propiedad nos permite eliminar la parte del muchos automaticamente
+    //Tras haberlo quitado de la colección
+    @OneToMany (mappedBy = "trabajador")
+    @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn
+    @JsonBackReference
+    private Set<AnuncioTrabajador> anunciosTrabajador;
 
 
     public Trabajador(String nombre, String apellidos, String informacion, String telefono, Usuario usuario) {
