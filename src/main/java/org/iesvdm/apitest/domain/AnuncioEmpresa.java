@@ -1,9 +1,6 @@
 package org.iesvdm.apitest.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,5 +28,8 @@ public class AnuncioEmpresa {
 
     //Nullable
     private Date fecha_fin;
+
+    @ManyToOne
+    private Empresa empresa;
 
 }
