@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,12 +31,24 @@ public class Empresa {
     
     @OneToOne
     @JsonBackReference
+    @MapsId
     private Usuario usuario;
 
-    @OneToMany (mappedBy = "empresa")
-    @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn
+    @OneToMany (mappedBy = "empresa", cascade = CascadeType.REMOVE, orphanRemoval = true)
+   // @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn p
     @JsonBackReference
-    private Set<AnuncioEmpresa> anuncioEmpresas;
+    private Set<AnuncioEmpresa> anuncioEmpresas = new HashSet<>();
+
+    @ManyToMany
+    @JsonBackReference
+    /*@JoinTable(name = "anuncio_trabajador_has_empresa",
+    joinColumns = @JoinColumn(name ="id_empresa" ,referencedColumnName ="id_empresa" ),
+    inverseJoinColumns = @JoinColumn(name ="id_anunciotrabajador" ,referencedColumnName ="id_anunciotrabajador" ) )
+    */
+    private Set<AnuncioTrabajador> anunciosInteresado = new HashSet<>();
+
+
+
     public Empresa(String nombre, String descripcion, String telefono, Usuario usuario) {
         this.id_empresa=usuario.getId_usuario();
         this.nombre = nombre;

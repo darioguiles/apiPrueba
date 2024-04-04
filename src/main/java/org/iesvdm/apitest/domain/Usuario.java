@@ -16,17 +16,22 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 @NoArgsConstructor
 public class Usuario {
 
+    //Para poner indices
+    //@Table(indexes= {@Index(name= ,columnList= ,unique= )} )
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long id_usuario;
 
+    @Column(unique = true)
     private String nom_usuario; // <-- Asegurar esto y hashear de alguna manera, también que sean validos en login
 
+    @Column(unique = true)
     private String correo; // <-- Ambos de estos campos serán equivalentes al hacer un login
     //Podemos tener un hashcode de nom_usuario y correo puesto que estos son los campos que definen el login
     //DEBEN ser únicos e irrepetible. HASH con opción a modificar
 
+    //Con Spring Security aseguramos la contraseña (Hash)
     private String contrasenia;
 
     private String rutapfp; //<-- Este string almacena la ruta donde se guarda la foto de perfil, tendremos por defecto
@@ -37,11 +42,13 @@ public class Usuario {
     @OneToOne
     @JsonManagedReference
     @ToStringExclude
+    @PrimaryKeyJoinColumn
     private Empresa empresa;
 
     @OneToOne
     @JsonManagedReference
     @ToStringExclude
+    @PrimaryKeyJoinColumn
     private Trabajador trabajador;
 
     //Constructor Usuario SIN ruta img (Img por defecto)

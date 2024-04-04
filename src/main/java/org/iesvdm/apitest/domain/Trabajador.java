@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,6 +33,7 @@ public class Trabajador {
 
     @OneToOne
     @JsonBackReference
+    @MapsId
     private Usuario usuario;
     // COINCIDEN LOS IDs
 
@@ -41,7 +43,7 @@ public class Trabajador {
     @OneToMany (mappedBy = "trabajador")
     @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn
     @JsonBackReference
-    private Set<AnuncioTrabajador> anunciosTrabajador;
+    private Set<AnuncioTrabajador> anunciosTrabajador = new HashSet<>();
 
 
     public Trabajador(String nombre, String apellidos, String informacion, String telefono, Usuario usuario) {

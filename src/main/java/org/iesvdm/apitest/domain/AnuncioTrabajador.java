@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Usar estilo nuevo
@@ -24,5 +27,9 @@ public class AnuncioTrabajador {
 
     @ManyToOne
     private Trabajador trabajador;
+
+    @ManyToMany (mappedBy = "anunciosInteresado")
+    @JsonBackReference
+    private Set<Empresa> empresasInteresadas = new HashSet<>();
 
 }
