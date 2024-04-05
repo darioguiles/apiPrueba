@@ -42,6 +42,8 @@ public class Usuario {
     @OneToOne
     @JsonManagedReference
     @ToStringExclude
+    // *** Esta anotación junto a un MapsId en el otro lado nos permiten ***
+    // *** Que la relacion entre ambas sea Identificativa en BBDD ***
     @PrimaryKeyJoinColumn
     private Empresa empresa;
 

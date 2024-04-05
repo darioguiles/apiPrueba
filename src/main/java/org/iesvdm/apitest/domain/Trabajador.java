@@ -40,10 +40,13 @@ public class Trabajador {
     //orphanRemoval = true
     //Esta propiedad nos permite eliminar la parte del muchos automaticamente
     //Tras haberlo quitado de la colección
-    @OneToMany (mappedBy = "trabajador")
-    @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn
+    @OneToMany (mappedBy = "trabajador", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference
     private Set<AnuncioTrabajador> anunciosTrabajador = new HashSet<>();
+
+    @ManyToMany
+    @JsonBackReference
+    private Set<AnuncioEmpresa> anunciosAplicados = new HashSet<>();
 
 
     public Trabajador(String nombre, String apellidos, String informacion, String telefono, Usuario usuario) {
