@@ -9,8 +9,9 @@ import java.util.List;
 
 @Repository
 public interface AnuncioEmpresaRepository extends JpaRepository<AnuncioEmpresa,Long> {
-    public List<Empresa> findByNombreContainingIgnoreCase (String titulo);
-    public List<Empresa> findByNombreContainingIgnoreCaseOrderByNombreAsc (String titulo);
-    public List<Empresa> findByNombreContainingIgnoreCaseOrderByNombreDesc (String titulo);
+   //Estos seran para Filtrado y busqueda
+    public List<AnuncioEmpresa> findAllByDescripcionContainingIgnoreCaseAsc (String desc);
+    public List<AnuncioEmpresa> findAllByDescripcionContainingIgnoreCaseDesc (String desc);
+
 
 }
