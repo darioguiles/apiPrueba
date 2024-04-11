@@ -3,9 +3,10 @@ package org.iesvdm.apitest;
 import org.iesvdm.apitest.domain.Empresa;
 import org.iesvdm.apitest.domain.Trabajador;
 import org.iesvdm.apitest.domain.Usuario;
-import org.iesvdm.apitest.repository.EmpresaRepository;
-import org.iesvdm.apitest.repository.TrabajadorRepository;
-import org.iesvdm.apitest.repository.UsuarioRepository;
+import org.iesvdm.apitest.repository.*;
+import org.iesvdm.apitest.service.AnuncioTrabajadorService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,14 +20,24 @@ public class TestInicio {
     TrabajadorRepository trabajadorRepository;
     @Autowired
     EmpresaRepository empresaRepository;
+    @Autowired
+    AnuncioEmpresaRepository anuncioEmpresaRepository;
+    @Autowired
+    AnuncioTrabajadorRepository anuncioTrabajadorRepository;
 
-    @Test
-    void contextLoads() {
 
-        /*
-        * Ejemplo de implementacion, tenemos la clase usuario vacia, y cuando alguien utiliza la aplicacion
-        * y crea un usuario
-        * */
+
+    /*
+     * Ejemplo de implementacion, tenemos la clase usuario vacia,
+     * y cuando alguien utiliza la aplicacion
+     * y crea un usuario
+     * */
+
+    /*
+    * Para los test tenemos lo siguiente:
+    *
+    @BeforeEach
+    void inicioClases() {
 
         Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
@@ -43,9 +54,28 @@ public class TestInicio {
         trabajadorRepository.save(t);
         usuarioRepository.save(u2);
         empresaRepository.save(e);
-                                                                                                                        
+    }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        @AfterEach
+        void borradoClases() {
+            usuarioRepository.deleteAll();
+            empresaRepository.deleteAll();
+            empresaRepository.deleteAll();
+            trabajadorRepository.deleteAll();
+        }
+    * */
+
+
+
+    @Test
+    void contextLoads() {
+
+
+    }
+
+    @Test
+    void anunciosTest(){
+
     }
 }
 

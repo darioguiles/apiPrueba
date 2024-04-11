@@ -9,8 +9,9 @@ import java.util.List;
 @Repository
 public interface AnuncioTrabajadorRepository extends JpaRepository<AnuncioTrabajador,Long> {
     //Estamos probando diferentes cosas de filtrado
-    public List<AnuncioTrabajador> findAllByDescripcionContainingIgnoreCaseAsc (String desc);
-    public List<AnuncioTrabajador> findAllByDescripcionContainingIgnoreCaseDesc (String desc);
+    public List<AnuncioTrabajador> findByDescripcionContainingIgnoreCase (String titulo);
+    public List<AnuncioTrabajador> findAllByDescripcionContainingIgnoreCaseOrderByDescripcionAsc (String desc);
+    public List<AnuncioTrabajador> findAllByDescripcionContainingIgnoreCaseOrderByDescripcionDesc (String desc);
 
 
 }
