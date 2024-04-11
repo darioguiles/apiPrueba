@@ -66,15 +66,32 @@ public class TestInicio {
     * */
 
 
-
+    /**
+     * @author Dario Guiles
+     * Bateria de test que comprueba la relación usuario Trabajador
+     * Usando una ya asociada y jugando con varias
+     * */
     @Test
-    void contextLoads() {
+    void testeoUsuarioTrabajador() {
 
 
     }
 
     @Test
-    void anunciosTest(){
+    void testeoUsuarioEmpresa() {
+
+
+    }
+
+    @Test
+    void testeoAnuncioTConTrabajadorYEmpresa() {
+
+
+    }
+
+    @Test
+    void testeoAnuncioEConTrabajadorYEmpresa() {
+
 
     }
 }
