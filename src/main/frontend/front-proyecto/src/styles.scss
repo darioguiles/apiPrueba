@@ -3,3 +3,85 @@
 @import "assets/bootstrap-5.0.2/scss/bootstrap";
 
 
+
+.logo{
+  width: 160px;
+
+  @include media-breakpoint-down(md) {
+    width: 200px;
+  }
+
+}
+
+.navbar-collapse{
+  ul{
+    align-items: center;
+    //Se muestra en el centro al desplegar
+
+    li{
+      @include media-breakpoint-down(lg) {
+        margin:0px 0px 2px 2px;
+      }
+
+      @include media-breakpoint-down(md) {
+        // Estilos para pantallas más pequeñas que el breakpoint md (768px)
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+    }
+  }
+}
+
+a{
+  text-decoration: none;
+}
+
+#registro{
+  text-decoration:underline;
+}
+
+
+
+.bg-image{
+  background-position: center;
+  background-repeat: no-repeat;
+  //La altura fija nos causa problemas
+  max-height: 500px;
+  background-size: contain;
+}
+
+#imgBan{
+  background-image: url("./assets/images/microphone-acoustic-isolation-foam.jpg");
+  height: 400px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
+
+.pfp{
+  border-radius: 50%;
+  width: 140px;
+
+}
+
+
+
+
+
+/*
+Banner pasable, cambiar imagenes y jugar con la distorsión
+*/
+
+#carouselExampleIndicators {
+  max-width: 1000px; /* Ancho máximo del carrusel */
+}
+
+
+.carousel-item img {
+  max-width: 100%; /* La imagen no excederá el ancho máximo del carrusel */
+  max-height: 1000px; /* Establece la altura máxima de las imágenes */
+}
+
+
