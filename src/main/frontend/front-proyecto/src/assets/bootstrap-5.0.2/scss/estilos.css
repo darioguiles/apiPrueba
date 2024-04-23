@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/* You can add global styles to this file, and also import other style files */
 /*!
  * Bootstrap v5.0.2 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -9737,5 +9736,17 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.card {
+  margin: 10px;
+}
 
-/*# sourceMappingURL=styles.css.map */
+footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.accordion-item {
+  margin: 5px;
+}
+
+/*# sourceMappingURL=estilos.css.map */
