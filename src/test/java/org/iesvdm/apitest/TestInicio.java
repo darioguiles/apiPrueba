@@ -49,7 +49,7 @@ public class TestInicio {
 
         u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
-         u2 = new Usuario(0, "Mr.Oracle","u@a.com","password","",false,null,null);
+         u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
         usuarioRepository.save(u2);
          t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
         trabajadorRepository.save(t);
