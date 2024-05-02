@@ -26,7 +26,10 @@ public class TestInicio {
     AnuncioTrabajadorRepository anuncioTrabajadorRepository;
 
 
-
+    Usuario u1;
+    Usuario u2;
+    Trabajador t;
+    Empresa e;
     /*
      * Ejemplo de implementacion, tenemos la clase usuario vacia,
      * y cuando alguien utiliza la aplicacion
@@ -36,16 +39,21 @@ public class TestInicio {
     /*
     * Para los test tenemos lo siguiente:
     *
+
+
+
+    * */
+
     @BeforeEach
     void inicioClases() {
 
-        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
-        Usuario u2 = new Usuario(0, "Mr.Oracle","u@a.com","password","",false,null,null);
+         u2 = new Usuario(0, "Mr.Oracle","u@a.com","password","",false,null,null);
         usuarioRepository.save(u2);
-        Trabajador t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
+         t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
         trabajadorRepository.save(t);
-        Empresa e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
+         e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
         empresaRepository.save(e);
 
         u1.setTrabajador(t);
@@ -55,16 +63,11 @@ public class TestInicio {
         usuarioRepository.save(u2);
         empresaRepository.save(e);
     }
-
-        @AfterEach
-        void borradoClases() {
-            usuarioRepository.deleteAll();
-            empresaRepository.deleteAll();
-            empresaRepository.deleteAll();
-            trabajadorRepository.deleteAll();
-        }
-    * */
-
+    @AfterEach
+    void borradoClases() {
+        usuarioRepository.delete(u1);
+        usuarioRepository.delete(u2);
+    }
 
     /**
      * @author Dario Guiles
@@ -73,7 +76,6 @@ public class TestInicio {
      * */
     @Test
     void testeoUsuarioTrabajador() {
-
 
     }
 
