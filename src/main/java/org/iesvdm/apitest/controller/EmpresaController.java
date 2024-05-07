@@ -26,7 +26,6 @@ public class EmpresaController {
         /*List<EmpresaDTO> empresaDTOList = listaT.stream()
                 .map(EmpresaDTO::new)
                 .collect(Collectors.toList()); * */
-        //Para mejorar el consumo de memoria quitar DTO del path por defecto y que sea con el parametro count ¿?
     }
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<Empresa> all(@RequestParam("buscar") Optional<String> buscarOpc

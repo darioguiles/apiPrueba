@@ -39,12 +39,7 @@ public class TestInicio {
     /*
     * Para los test tenemos lo siguiente:
     *
-
-
-
-    * */
-
-    @BeforeEach
+     @BeforeEach
     void inicioClases() {
 
         u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
@@ -67,7 +62,14 @@ public class TestInicio {
     void borradoClases() {
         usuarioRepository.delete(u1);
         usuarioRepository.delete(u2);
+        trabajadorRepository.delete(t);
+        empresaRepository.delete(e);
     }
+
+
+    * */
+
+
 
     /**
      * @author Dario Guiles

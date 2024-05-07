@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.iesvdm</groupId>
-    <artifactId>videoclub</artifactId>
+    <artifactId>Proyecto</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>videoclub</name>
-    <description>videoclub</description>
+    <name>Proyecto</name>
+    <description>Proyecto</description>
     <properties>
         <java.version>21</java.version>
     </properties>
@@ -50,6 +50,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
