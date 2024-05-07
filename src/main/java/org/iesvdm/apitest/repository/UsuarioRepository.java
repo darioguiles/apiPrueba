@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository //Reforzamos el repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     //Si no usar native query con @Query
-
+/*
+Error??
     Optional<Usuario> findByNom_usuario(String usuario);
 
     Optional<Usuario> findByCorreo(String email);
@@ -18,5 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     Boolean existsByNom_usuario(String username);
 
     Boolean existsByCorreo(String email);
+
+ */
 }
 
