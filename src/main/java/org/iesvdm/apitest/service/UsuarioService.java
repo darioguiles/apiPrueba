@@ -29,7 +29,7 @@ public class UsuarioService {
 
     public Usuario replace(Long id, Usuario usuario) {
 
-        return this.usuarioRepository.findById(id).map( p -> (id.equals(usuario.getId_usuario())  ?
+        return this.usuarioRepository.findById(id).map( p -> (id.equals(usuario.getIdUsuario())  ?
                         this.usuarioRepository.save(usuario) : null))
                 .orElseThrow(() -> new UsuarioNotFoundException(id));
 

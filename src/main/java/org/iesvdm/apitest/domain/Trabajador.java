@@ -1,6 +1,8 @@
 package org.iesvdm.apitest.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +34,7 @@ public class Trabajador {
     private String telefono;
 
     @OneToOne
-    @JsonBackReference
+    @JsonIgnore
     @MapsId
     private Usuario usuario;
     // COINCIDEN LOS IDs
@@ -41,16 +43,16 @@ public class Trabajador {
     //Esta propiedad nos permite eliminar la parte del muchos automaticamente
     //Tras haberlo quitado de la colección
     @OneToMany (mappedBy = "trabajador", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonBackReference
+    @JsonManagedReference
     private Set<AnuncioTrabajador> anunciosTrabajador = new HashSet<>();
 
     @ManyToMany
-    @JsonBackReference
+    @JsonIgnore
     private Set<AnuncioEmpresa> anunciosAplicados = new HashSet<>();
 
 
     public Trabajador(String nombre, String apellidos, String informacion, String telefono, Usuario usuario) {
-        this.id_trabajador=usuario.getId_usuario();
+        this.id_trabajador=usuario.getIdUsuario();
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.informacion = informacion;

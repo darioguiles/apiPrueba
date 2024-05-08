@@ -1,6 +1,8 @@
 package org.iesvdm.apitest.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,17 +32,24 @@ public class Empresa {
     private String telefono;
     
     @OneToOne
-    @JsonBackReference
+    @JsonManagedReference
     @MapsId
     private Usuario usuario;
 
     @OneToMany (mappedBy = "empresa", cascade = CascadeType.REMOVE, orphanRemoval = true)
    // @OnDelete(action = OnDeleteAction.CASCADE) //Requiere de @JoinColumn p
-    @JsonBackReference
+    @JsonManagedReference //Solo en One to Many en el lado que queremos quitar
     private Set<AnuncioEmpresa> anuncioEmpresas = new HashSet<>();
 
+    /*
+    * @JsonBackReference y @JsonManagedReference
+    * solo sirve en oneToMany y JsonManagedReference a los oneToMany en colec
+    *
+    * */
+
+
     @ManyToMany
-    @JsonBackReference
+    @JsonIgnore
     /*@JoinTable(name = "anuncio_trabajador_has_empresa",
     joinColumns = @JoinColumn(name ="id_empresa" ,referencedColumnName ="id_empresa" ),
     inverseJoinColumns = @JoinColumn(name ="id_anunciotrabajador" ,referencedColumnName ="id_anunciotrabajador" ) )
@@ -50,7 +59,7 @@ public class Empresa {
 
 
     public Empresa(String nombre, String descripcion, String telefono, Usuario usuario) {
-        this.id_empresa=usuario.getId_usuario();
+        this.id_empresa=usuario.getIdUsuario();
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.telefono = telefono;

@@ -4,22 +4,18 @@ import org.iesvdm.apitest.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository //Reforzamos el repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     //Si no usar native query con @Query
-/*
-Error??
-    Optional<Usuario> findByNom_usuario(String usuario);
+    Optional<Usuario> findByNomUsuario(String nombre);
 
     Optional<Usuario> findByCorreo(String email);
 
-    Boolean existsByNom_usuario(String username);
+    Boolean existsByNomUsuario(String username);
 
     Boolean existsByCorreo(String email);
 
- */
 }
 

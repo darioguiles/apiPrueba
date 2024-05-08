@@ -1,6 +1,7 @@
 package org.iesvdm.apitest.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,10 +27,11 @@ public class AnuncioTrabajador {
     private String descripcion;
 
     @ManyToOne
+    @JsonBackReference
     private Trabajador trabajador;
 
     @ManyToMany (mappedBy = "anunciosInteresado")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Empresa> empresasInteresadas = new HashSet<>();
 
 }

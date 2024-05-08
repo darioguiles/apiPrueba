@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -21,10 +22,11 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private long id_usuario;
+    private long idUsuario;
 
     @Column(unique = true)
-    private String nom_usuario; // <-- Asegurar esto y hashear de alguna manera, también que sean validos en login
+
+    private String nomUsuario; // <-- Asegurar esto y hashear de alguna manera, también que sean validos en login
 
     @Column(unique = true)
     private String correo; // <-- Ambos de estos campos serán equivalentes al hacer un login
@@ -40,7 +42,8 @@ public class Usuario {
     private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
     @OneToOne
-    @JsonManagedReference
+    //Managed reference no se utiliza en one To one
+    @JsonBackReference
     @ToStringExclude
     // *** Esta anotación junto a un MapsId en el otro lado nos permiten ***
     // *** Que la relacion entre ambas sea Identificativa en BBDD ***
@@ -48,15 +51,14 @@ public class Usuario {
     private Empresa empresa;
 
     @OneToOne
-    @JsonManagedReference
     @ToStringExclude
     @PrimaryKeyJoinColumn
     private Trabajador trabajador;
 
     //Constructor Usuario SIN ruta img (Img por defecto)
     public Usuario(long id_usuario, String nom_usuario, String correo, String contrasenia) {
-        this.id_usuario = id_usuario;
-        this.nom_usuario = nom_usuario;
+        this.idUsuario = id_usuario;
+        this.nomUsuario = nom_usuario;
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.rutapfp = "ruta_defecto";
@@ -64,5 +66,11 @@ public class Usuario {
         // empresa y trabajador se inicializarán a null automáticamente
     }
 
+    public Usuario(String nom_usuario, String correo, String contrasenia) {
+        this.nomUsuario = nom_usuario;
+        this.correo = correo;
+        this.contrasenia = contrasenia;
+        this.rutapfp = "ruta_defecto";
+  }
 
 }
