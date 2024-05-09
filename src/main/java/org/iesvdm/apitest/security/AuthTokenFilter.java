@@ -23,7 +23,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenUtils tokenUtils;
-
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
