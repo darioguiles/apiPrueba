@@ -26,10 +26,6 @@ public class TestInicio {
     AnuncioTrabajadorRepository anuncioTrabajadorRepository;
 
 
-    Usuario u1;
-    Usuario u2;
-    Trabajador t;
-    Empresa e;
     /*
      * Ejemplo de implementacion, tenemos la clase usuario vacia,
      * y cuando alguien utiliza la aplicacion
@@ -42,13 +38,13 @@ public class TestInicio {
      @BeforeEach
     void inicioClases() {
 
-        u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
-         u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
+        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
         usuarioRepository.save(u2);
-         t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
+        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
         trabajadorRepository.save(t);
-         e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
+        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
         empresaRepository.save(e);
 
         u1.setTrabajador(t);
@@ -78,7 +74,21 @@ public class TestInicio {
      * */
     @Test
     void testeoUsuarioTrabajador() {
+       Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        usuarioRepository.save(u1);
+        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
+        usuarioRepository.save(u2);
+        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
+        trabajadorRepository.save(t);
+        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
+        empresaRepository.save(e);
 
+        u1.setTrabajador(t);
+        u2.setEmpresa(e);
+        usuarioRepository.save(u1);
+        trabajadorRepository.save(t);
+        usuarioRepository.save(u2);
+        empresaRepository.save(e);
     }
 
     @Test

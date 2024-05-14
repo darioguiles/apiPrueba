@@ -22,6 +22,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (username.contains("@"))
         {
+            user = usuarioRepository.findByCorreo(username) //Con esto le damos uso a findByCorreo()
+                    .orElseThrow(() ->
+                            new UsernameNotFoundException("Correo no encontrado con dirección: " + username));
 
         }
         else {

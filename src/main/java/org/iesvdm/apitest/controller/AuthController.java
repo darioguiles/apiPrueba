@@ -62,6 +62,9 @@ public class AuthController {
 
     }
 
+    /**
+     * Se omite el tema de Rol en este register damos por hecho el uso del booleano y pasa sin problemas
+    * */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userRepository.existsByNomUsuario(registerRequest.getUsername())) {
@@ -75,13 +78,12 @@ public class AuthController {
         // Create new user's account
         Usuario user = new Usuario(registerRequest.getUsername(),
                 registerRequest.getEmail(),
-                encoder.encode(registerRequest.getPassword()));
+                encoder.encode(registerRequest.getPassword()),
+                registerRequest.isEsAdm());
 
-        Set<String> strRoles = registerRequest.getRoles();
-        boolean esAdmin = false;
-
+/*
         if (strRoles == null) {
-            String userRole = userRepository.findByCorreo()
+            String userRole = new String("user")
                     .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado."));
             esAdmin=userRole;
         } else {
@@ -103,6 +105,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+ */
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Usuario registrado correctamente!"));

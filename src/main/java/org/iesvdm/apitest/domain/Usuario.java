@@ -66,10 +66,11 @@ public class Usuario {
         // empresa y trabajador se inicializarán a null automáticamente
     }
 
-    public Usuario(String nom_usuario, String correo, String contrasenia) {
+    public Usuario(String nom_usuario, String correo, String contrasenia, boolean admin) {
         this.nomUsuario = nom_usuario;
         this.correo = correo;
         this.contrasenia = contrasenia;
+        this.esAdmin = admin;
         this.rutapfp = "ruta_defecto";
   }
 

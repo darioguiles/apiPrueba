@@ -11,6 +11,6 @@ public class RegisterRequest {
     private String username;
     private String email;
     private String password;
-    private Set<String> roles;
+    private boolean esAdm;
 
 }
