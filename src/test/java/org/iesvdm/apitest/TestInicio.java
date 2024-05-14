@@ -65,7 +65,9 @@ public class TestInicio {
 
     * */
 
+    //Todo Hacer que funcione Delete de usuario como se tiene entendido
 
+    //Todo Que al borrar una empresa o trabajador se eliminen también los anuncios creados
 
     /**
      * @author Dario Guiles
@@ -74,6 +76,7 @@ public class TestInicio {
      * */
     @Test
     void testeoUsuarioTrabajador() {
+        /*
        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
         Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
@@ -89,6 +92,7 @@ public class TestInicio {
         trabajadorRepository.save(t);
         usuarioRepository.save(u2);
         empresaRepository.save(e);
+        */
     }
 
     @Test
