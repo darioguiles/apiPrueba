@@ -1,6 +1,7 @@
 package org.iesvdm.apitest.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,9 +23,9 @@ public class AnuncioTrabajador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private long id_anunciotrabajador;
-
-    private Date fecha_publicacion;
+    private long idAnuncioTrabajador;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
+    private Date fechaPublicacion;
     private String descripcion;
 
     @ManyToOne
@@ -34,4 +36,8 @@ public class AnuncioTrabajador {
     @JsonIgnore
     private Set<Empresa> empresasInteresadas = new HashSet<>();
 
+    public AnuncioTrabajador(String descripcion) {
+        this.descripcion = descripcion;
+        this.fechaPublicacion = new Date();
+    }
 }

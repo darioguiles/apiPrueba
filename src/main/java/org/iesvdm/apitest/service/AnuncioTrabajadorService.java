@@ -31,7 +31,7 @@ public class AnuncioTrabajadorService {
 
         //  org.springframework.data.domain public interface Pageable  Maven: org.springframework.data
 
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("id_anunciotrabajador" ).ascending());
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioTrabajador" ).ascending());
         //Interfaces
         Page<AnuncioTrabajador> pageAll = this.anuncioTrabajadorRepository.findAll(paginado);
 
@@ -59,7 +59,7 @@ public class AnuncioTrabajadorService {
     public AnuncioTrabajador replace(Long id, AnuncioTrabajador anuncioTrabajador) {
 
         return this.anuncioTrabajadorRepository.findById(id).map( p -> (id
-                        .equals(anuncioTrabajador.getId_anunciotrabajador())  ?
+                        .equals(anuncioTrabajador.getIdAnuncioTrabajador())  ?
                         this.anuncioTrabajadorRepository.save(anuncioTrabajador) : null))
                 .orElseThrow(() -> new AnuncioTrabajadorNotFoundException(id));
     }

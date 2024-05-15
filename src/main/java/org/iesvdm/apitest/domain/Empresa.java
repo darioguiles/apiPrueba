@@ -43,7 +43,7 @@ public class Empresa {
 
     /*
     * @JsonBackReference y @JsonManagedReference
-    * solo sirve en oneToMany y JsonManagedReference a los oneToMany en colec
+    * solo sirve en oneToMany y JsonManagedReference se asigna a los oneToMany en colecciones
     *
     * */
 

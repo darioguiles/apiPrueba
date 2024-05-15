@@ -32,7 +32,7 @@ public class AnuncioEmpresaService {
 
         //  org.springframework.data.domain public interface Pageable  Maven: org.springframework.data
 
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("id_anuncioempresa" ).ascending());
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioEmpresa" ).ascending());
         //Interfaces
         Page<AnuncioEmpresa> pageAll = this.anuncioEmpresaRepository.findAll(paginado);
 
@@ -60,7 +60,7 @@ public class AnuncioEmpresaService {
     public AnuncioEmpresa replace(Long id, AnuncioEmpresa anuncioEmpresa) {
 
         return this.anuncioEmpresaRepository.findById(id).map( p ->
-                        (id.equals(anuncioEmpresa.getId_anuncioempresa())  ?
+                        (id.equals(anuncioEmpresa.getIdAnuncioEmpresa())  ?
                         this.anuncioEmpresaRepository.save(anuncioEmpresa) : null))
                 .orElseThrow(() -> new AnuncioEmpresaNotFoundException(id));
     }

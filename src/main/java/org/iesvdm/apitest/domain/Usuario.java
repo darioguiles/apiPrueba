@@ -25,7 +25,6 @@ public class Usuario {
     private long idUsuario;
 
     @Column(unique = true)
-
     private String nomUsuario; // <-- Asegurar esto y hashear de alguna manera, también que sean validos en login
 
     @Column(unique = true)
@@ -41,16 +40,17 @@ public class Usuario {
 
     private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
-    @OneToOne
-    //Managed reference no se utiliza en one To one
-    @JsonBackReference
+
+    // --> https://www.baeldung.com/jpa-one-to-one#spk-model <--
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+    @JsonBackReference //Funciona según las pruebas
     @ToStringExclude
     // *** Esta anotación junto a un MapsId en el otro lado nos permiten ***
     // *** Que la relacion entre ambas sea Identificativa en BBDD ***
     @PrimaryKeyJoinColumn
     private Empresa empresa;
 
-    @OneToOne
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @ToStringExclude
     @PrimaryKeyJoinColumn
     private Trabajador trabajador;

@@ -1,8 +1,6 @@
 package org.iesvdm.apitest;
 
-import org.iesvdm.apitest.domain.Empresa;
-import org.iesvdm.apitest.domain.Trabajador;
-import org.iesvdm.apitest.domain.Usuario;
+import org.iesvdm.apitest.domain.*;
 import org.iesvdm.apitest.repository.*;
 import org.iesvdm.apitest.service.AnuncioTrabajadorService;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class TestInicio {
@@ -54,15 +53,6 @@ public class TestInicio {
         usuarioRepository.save(u2);
         empresaRepository.save(e);
     }
-    @AfterEach
-    void borradoClases() {
-        usuarioRepository.delete(u1);
-        usuarioRepository.delete(u2);
-        trabajadorRepository.delete(t);
-        empresaRepository.delete(e);
-    }
-
-
     * */
 
     //Todo Hacer que funcione Delete de usuario como se tiene entendido
@@ -77,7 +67,7 @@ public class TestInicio {
     @Test
     void testeoUsuarioTrabajador() {
         /*
-       Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
         usuarioRepository.save(u1);
         Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
         usuarioRepository.save(u2);
@@ -97,18 +87,64 @@ public class TestInicio {
 
     @Test
     void testeoUsuarioEmpresa() {
+/*
+        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","", false,null,null);
+        usuarioRepository.save(u1);
+        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
+        usuarioRepository.save(u2);
+        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
+        trabajadorRepository.save(t);
+        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
+        empresaRepository.save(e);
 
+        u1.setTrabajador(t);
+        u2.setEmpresa(e);
+        usuarioRepository.save(u1);
+        trabajadorRepository.save(t);
+        usuarioRepository.save(u2);
+        empresaRepository.save(e);
 
+ */
     }
 
     @Test
+    @Transactional
     void testeoAnuncioTConTrabajadorYEmpresa() {
+        /*
+        //Sacar el trabajador con el id correspondiente en este caso es el 1 pero podria ser otro
+        Trabajador t = trabajadorRepository.getReferenceById(1L);
+        Empresa e = empresaRepository.getReferenceById(2L);
+        AnuncioTrabajador anuncioT = new AnuncioTrabajador("Esto es un anuncio de un Trabajador");
+        anuncioTrabajadorRepository.save(anuncioT);
+        AnuncioEmpresa anuncioE = new AnuncioEmpresa("Esto es un anuncio de una Empresa con 5 puestos y " +
+                "que no tiene fin",5);
+        anuncioEmpresaRepository.save(anuncioE);
+
+        //Logica de los anunciosT
+        anuncioT.setTrabajador(t);
+        anuncioTrabajadorRepository.save(anuncioT);
+        t.getAnunciosTrabajador().add(anuncioT);
+        trabajadorRepository.save(t);
+
+        //Logica de los anunciosE
+        anuncioE.setEmpresa(e);
+        anuncioEmpresaRepository.save(anuncioE);
+        e.getAnuncioEmpresas().add(anuncioE);
+        empresaRepository.save(e);
+
+         */
+        /*
+        * TODO revisar el funcionamiento de Empresa-Anuncio puesto que no se pone el Id al igual que en Trabajador-Anuncio
+        * */
 
 
     }
 
     @Test
     void testeoAnuncioEConTrabajadorYEmpresa() {
+        //usuarioRepository.deleteAll();
+        //trabajadorRepository.deleteAll();
+        //empresaRepository.deleteAll();
 
 
     }
