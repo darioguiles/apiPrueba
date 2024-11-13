@@ -55,8 +55,6 @@ public class TestInicio {
     }
     * */
 
-    //Todo Hacer que funcione Delete de usuario como se tiene entendido
-
     //Todo Que al borrar una empresa o trabajador se eliminen también los anuncios creados
 
     /**
