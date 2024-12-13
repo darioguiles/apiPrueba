@@ -56,8 +56,7 @@ public class Usuario {
     private Trabajador trabajador;
 
     //Constructor Usuario SIN ruta img (Img por defecto)
-    public Usuario(long id_usuario, String nom_usuario, String correo, String contrasenia) {
-        this.idUsuario = id_usuario;
+    public Usuario(String nom_usuario, String correo, String contrasenia) {
         this.nomUsuario = nom_usuario;
         this.correo = correo;
         this.contrasenia = contrasenia;
