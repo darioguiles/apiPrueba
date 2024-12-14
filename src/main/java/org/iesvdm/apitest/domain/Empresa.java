@@ -65,4 +65,6 @@ public class Empresa {
         this.telefono = telefono;
         this.usuario = usuario;
     }
+
+    //assets/images/blank-profile-picture-973460_1280.png
 }

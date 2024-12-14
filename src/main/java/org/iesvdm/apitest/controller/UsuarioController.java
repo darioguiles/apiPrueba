@@ -3,6 +3,7 @@ package org.iesvdm.apitest.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.Usuario;
+import org.iesvdm.apitest.dto.UsuarioDto;
 import org.iesvdm.apitest.service.EmpresaService;
 import org.iesvdm.apitest.service.TrabajadorService;
 import org.iesvdm.apitest.service.UsuarioService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j //Anotacion para Log y ver los mensajes en terminal
 @RestController //Anotacion que extiende las capacidades de Controller, proporcionando
@@ -35,9 +37,10 @@ public class UsuarioController {
     }
 
     @GetMapping(value = {"","/"})
-    public List<Usuario> all() {
-        log.info("Accediendo a todas los usuarios");
-        return this.usuarioService.all();
+    public List<UsuarioDto> all() {
+        return this.usuarioService.all().stream()
+                .map(UsuarioDto::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping({"","/"})
