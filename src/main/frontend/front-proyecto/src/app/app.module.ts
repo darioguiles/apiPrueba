@@ -5,6 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import {routes} from "./app.routes";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {routes} from "./app.routes";
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

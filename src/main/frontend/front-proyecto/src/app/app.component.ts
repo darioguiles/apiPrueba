@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {NavegadorComponent} from "./navegador/navegador.component";
 import {AuthService} from "./services/auth.service";
+import {AnuncioService} from "./services/anuncio.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import {AuthService} from "./services/auth.service";
   imports: [CommonModule, RouterOutlet, NavegadorComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [AuthService]
+  providers: [AuthService, AnuncioService]
 })
 export class AppComponent {
   title = 'front-proyecto';

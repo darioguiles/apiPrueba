@@ -32,7 +32,7 @@ public class AnuncioController {
      * @param tamanio Tamaño de página para la paginación
      * @return Anuncios filtrados y paginados
      */
-    @GetMapping
+    @GetMapping(value = {"","/"})
     public ResponseEntity<Map<String, Object>> getAnuncios(
             @RequestParam(required = false, defaultValue = "false") boolean soloTrabajadores,
             @RequestParam(required = false, defaultValue = "false") boolean soloEmpresas,
@@ -42,15 +42,15 @@ public class AnuncioController {
         Map<String, Object> response = new HashMap<>();
 
         // Lógica para obtener anuncios de Trabajadores
-        if (soloTrabajadores) {
+        if (soloTrabajadores && !soloEmpresas) {
             response = anuncioTrabajadorService.findAll(pagina, tamanio);
         }
         // Lógica para obtener anuncios de Empresas
-        else if (soloEmpresas) {
+        else if (soloEmpresas && !soloTrabajadores) {
             response = anuncioEmpresaService.findAll(pagina, tamanio);
         }
         // Si no se selecciona ningún filtro, se combinan los anuncios de ambos tipos
-        else {
+        else{
             List<Object> todosAnuncios = new ArrayList<>();
 
             // Obtener anuncios de trabajadores y empresas
@@ -66,6 +66,7 @@ public class AnuncioController {
             response.put("currentPage", trabajadores.get("currentPage"));
             response.put("totalItems", (int) trabajadores.get("totalItems") + (int) empresas.get("totalItems"));
             response.put("totalPages", (int) trabajadores.get("totalPages"));
+
         }
 
         return ResponseEntity.ok(response);

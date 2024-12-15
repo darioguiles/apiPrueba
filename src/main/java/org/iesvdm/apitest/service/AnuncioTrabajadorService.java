@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AnuncioTrabajadorService {
+public class    AnuncioTrabajadorService {
 
     private final AnuncioTrabajadorRepository anuncioTrabajadorRepository;
 

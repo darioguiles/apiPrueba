@@ -13,75 +13,40 @@
   <div class="section d-lg-flex justify-content-between">
 
 
-    <div class=" border border-grey flex-grow-1 d-flex flex-column align-items-center" id="filtrado">
-      <h2 class="">Filtros</h2>
-      <form class="d-flex flex-column ">
-        <div class="form-group mt-2">
-          <input type="text" class="form-control" placeholder="Busqueda">
-        </div>
-
-        <div class="form-check form-check-inline mt-2">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-          <label class="form-check-label" for="inlineCheckbox1">Ofertas presenciales</label>
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="exampleFormControlSelect1">Localidad</label>
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>Madrid</option>
-            <option>Barcelona</option>
-            <option>Málaga</option>
-          </select>
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="customRange3" class="form-label">Distancia (km)</label>
-          <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange3">
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-2">Submit</button>
-      </form>
-    </div>
-
-    <div id="content" class="d-flex flex-column align-items-center flex-grow-1 mt-md-4 ">
-
-      <div class="card mb-3 border border-grey" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <img src="assets/images/blank-profile-picture-973460_1280.png" class="img-fluid pfp" alt="...">
+      <!-- Filtros -->
+      <div class="border border-grey  d-flex flex-column align-items-center" id="filtrado" style="max-height: 130px; overflow-y: auto;">
+        <h2>Filtros</h2>
+        <form>
+          <div class="d-flex flex-column align-items-center">
+          <div class="form-check form-check-inline">
+            <input type="checkbox"
+                   name="trabajadoresCheckbox"
+                   class="form-check-input" id="trabajadoresCheckbox" [(ngModel)]="soloTrabajadores" (change)="onCheckboxChange()" >
+            <label class="form-check-label" for="trabajadoresCheckbox">Anuncios de Trabajadores</label>
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+          <div class="form-check form-check-inline">
+            <input type="checkbox"
+                   name="empresasCheckbox"
+                   class="form-check-input" id="empresasCheckbox" [(ngModel)]="soloEmpresas" (change)="onCheckboxChange()" >
+            <label class="form-check-label" for="empresasCheckbox">Anuncios de Empresas</label>
+          </div>
             </div>
-          </div>
-        </div>
+        </form>
       </div>
 
 
-      <div class="card mb-3 border border-grey" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <img src="assets/images/building-6702046_1280.png" class="img-fluid pfp" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <!-- Componente Anuncios -->
+    <div id="content" class="d-flex flex-column align-items-center flex-grow-1 mt-md-4">
+      <app-anuncios
+        [soloTrabajadores]="soloTrabajadores"
+        [soloEmpresas]="soloEmpresas">
+      </app-anuncios>
     </div>
-
 
   </div>
-
 
 </div>
 </body>
 </html>
+
