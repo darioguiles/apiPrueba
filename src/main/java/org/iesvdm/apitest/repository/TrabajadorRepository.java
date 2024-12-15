@@ -15,5 +15,6 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador,Long> {
     public List<Trabajador> findByNombreContainingIgnoreCaseOrderByNombreAsc (String titulo);
     public List<Trabajador> findByNombreContainingIgnoreCaseOrderByNombreDesc (String titulo);
 
+    public Optional<Trabajador> findByUsuarioCorreo(String correo);
 
 }

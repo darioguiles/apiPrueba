@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class gestionUser {
-  private apiUrl = 'http://localhost:4200/v1/data-api/usuarios'; // URL base del backend
+  private apiUrl = 'http://localhost:8080/v1/data-api/usuarios'; // URL base del backend
 
   constructor(private http: HttpClient) {}
 

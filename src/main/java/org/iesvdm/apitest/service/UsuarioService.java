@@ -41,6 +41,27 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNotFoundException(id));
     }
 
+    public Usuario validarCredenciales(String nomUsuarioCorreo, String password) {
+        // Verificar si el dato ingresado es un nombre de usuario
+        Usuario usuario = usuarioRepository.findByNomUsuario(nomUsuarioCorreo).orElse(null);
+
+        if (usuario != null && usuario.getContrasenia().equals(password)) {
+            return usuario; // Si las credenciales coinciden
+        }
+
+        return null; // Si no se encuentran coincidencias
+    }
+
+    public Usuario validarCredencialesPorCorreo(String nomUsuarioCorreo, String password) {
+        // Verificar si el dato ingresado es un nombre de usuario
+        Usuario usuario = usuarioRepository.findByCorreo(nomUsuarioCorreo).orElse(null);
+
+        if (usuario != null && usuario.getContrasenia().equals(password)) {
+            return usuario; // Si las credenciales coinciden
+        }
+
+        return null; // Si no se encuentran coincidencias
+    }
 
 
 

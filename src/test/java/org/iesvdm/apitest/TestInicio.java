@@ -3,12 +3,15 @@ package org.iesvdm.apitest;
 import org.iesvdm.apitest.domain.*;
 import org.iesvdm.apitest.repository.*;
 import org.iesvdm.apitest.service.AnuncioTrabajadorService;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @SpringBootTest
 public class TestInicio {
@@ -24,127 +27,137 @@ public class TestInicio {
     @Autowired
     AnuncioTrabajadorRepository anuncioTrabajadorRepository;
 
+    /**
+     * Configuración inicial para los tests.
+     * Este método crea dos usuarios, un trabajador y una empresa asociados a ellos.
+     */
+    @BeforeEach
+    void setup() {
+        //Limpiamos
+        anuncioEmpresaRepository.deleteAll();
+        anuncioTrabajadorRepository.deleteAll();
+        trabajadorRepository.deleteAll();
+        empresaRepository.deleteAll();
+        usuarioRepository.deleteAll();
 
-    /*
-     * Ejemplo de implementacion, tenemos la clase usuario vacia,
-     * y cuando alguien utiliza la aplicacion
-     * y crea un usuario
-     * */
-
-    /*
-    * Para los test tenemos lo siguiente:
-    *
-     @BeforeEach
-    void inicioClases() {
-
-        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
+        // Crear usuarios
+        Usuario u1 = new Usuario(0, "usuario1", "u@a.com", "password", "", false, null, null);
+        Usuario u2 = new Usuario(0, "Mr.Oracle", "u@a1.com", "password", "", false, null, null);
         usuarioRepository.save(u1);
-        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
         usuarioRepository.save(u2);
-        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
-        trabajadorRepository.save(t);
-        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
-        empresaRepository.save(e);
 
-        u1.setTrabajador(t);
-        u2.setEmpresa(e);
+        // Crear trabajador asociado a usuario u1
+        Trabajador trabajador = new Trabajador("Dario", "Guiles", "Primer Trabajador", "610", u1);
+        trabajadorRepository.save(trabajador);
+
+        // Crear empresa asociada a usuario u2
+        Empresa empresa = new Empresa("Oracle", "Empresa de desarrollo de software", "+408", u2);
+        empresaRepository.save(empresa);
+
+        // Actualizar relaciones
+        u1.setTrabajador(trabajador);
+        u2.setEmpresa(empresa);
         usuarioRepository.save(u1);
-        trabajadorRepository.save(t);
         usuarioRepository.save(u2);
-        empresaRepository.save(e);
     }
-    * */
-
-    //Todo Que al borrar una empresa o trabajador se eliminen también los anuncios creados
 
     /**
-     * @author Dario Guiles
-     * Bateria de test que comprueba la relación usuario Trabajador
-     * Usando una ya asociada y jugando con varias
-     * */
+     * Test para verificar la relación entre Usuario y Trabajador.
+     */
     @Test
-    void testeoUsuarioTrabajador() {
-        /*
-        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","",false,null,null);
-        usuarioRepository.save(u1);
-        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
-        usuarioRepository.save(u2);
-        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
-        trabajadorRepository.save(t);
-        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
-        empresaRepository.save(e);
+    void testUsuarioTrabajador() {
+        // Obtener el usuario creado en el setup
+        Usuario u1 = usuarioRepository.findByNomUsuario("usuario1").orElse(null);
+        assert u1 != null;
 
-        u1.setTrabajador(t);
-        u2.setEmpresa(e);
-        usuarioRepository.save(u1);
-        trabajadorRepository.save(t);
-        usuarioRepository.save(u2);
-        empresaRepository.save(e);
-        */
+        // Verificar que el usuario tiene un trabajador asociado
+        assert u1.getTrabajador() != null;
+        assert u1.getTrabajador().getNombre().equals("Dario");
     }
 
+    /**
+     * Test para verificar la relación entre Usuario y Empresa.
+     */
     @Test
-    void testeoUsuarioEmpresa() {
-/*
-        Usuario u1 = new Usuario(0, "usuario1","u@a.com","password","", false,null,null);
-        usuarioRepository.save(u1);
-        Usuario  u2 = new Usuario(0, "Mr.Oracle","u@a1.com","password","",false,null,null);
-        usuarioRepository.save(u2);
-        Trabajador  t = new Trabajador( "Dario","Guiles","Primer Trabajador","610",u1);
-        trabajadorRepository.save(t);
-        Empresa  e = new Empresa( "Oracle","Empresa de desarrollo de software","+408",u2);
-        empresaRepository.save(e);
+    void testUsuarioEmpresa() {
+        // Obtener el usuario creado en el setup
+        Usuario u2 = usuarioRepository.findByNomUsuario("Mr.Oracle").orElse(null);
+        assert u2 != null;
 
-        u1.setTrabajador(t);
-        u2.setEmpresa(e);
-        usuarioRepository.save(u1);
-        trabajadorRepository.save(t);
-        usuarioRepository.save(u2);
-        empresaRepository.save(e);
-
- */
+        // Verificar que el usuario tiene una empresa asociada
+        assert u2.getEmpresa() != null;
+        assert u2.getEmpresa().getNombre().equals("Oracle");
     }
 
+
+    /**
+     * Test para verificar la relación entre AnuncioTrabajador y Trabajador.
+
+
+
+     */
     @Test
-    @Transactional
-    void testeoAnuncioTConTrabajadorYEmpresa() {
-        /*
-        //Sacar el trabajador con el id correspondiente en este caso es el 1 pero podria ser otro
-        Trabajador t = trabajadorRepository.getReferenceById(1L);
-        Empresa e = empresaRepository.getReferenceById(2L);
-        AnuncioTrabajador anuncioT = new AnuncioTrabajador("Esto es un anuncio de un Trabajador");
-        anuncioTrabajadorRepository.save(anuncioT);
-        AnuncioEmpresa anuncioE = new AnuncioEmpresa("Esto es un anuncio de una Empresa con 5 puestos y " +
-                "que no tiene fin",5);
-        anuncioEmpresaRepository.save(anuncioE);
+    void testAnuncioTrabajador() {
+        // Obtener el trabajador del setup
+        Trabajador trabajador = trabajadorRepository.findByUsuarioCorreo("u@a.com").orElse(null);
+        assert trabajador != null;
 
-        //Logica de los anunciosT
-        anuncioT.setTrabajador(t);
-        anuncioTrabajadorRepository.save(anuncioT);
-        t.getAnunciosTrabajador().add(anuncioT);
-        trabajadorRepository.save(t);
+        // Crear un anuncio para el trabajador
+        AnuncioTrabajador anuncio = new AnuncioTrabajador(0, new Date(), "Esto es un anuncio de un Trabajador", trabajador, null);
+        anuncioTrabajadorRepository.save(anuncio);
 
-        //Logica de los anunciosE
-        anuncioE.setEmpresa(e);
-        anuncioEmpresaRepository.save(anuncioE);
-        e.getAnuncioEmpresas().add(anuncioE);
-        empresaRepository.save(e);
-
-         */
-        /*
-        * TODO revisar el funcionamiento de Empresa-Anuncio puesto que no se pone el Id al igual que en Trabajador-Anuncio
-        * */
-
-
+        // Verificar que el anuncio se creó y está asociado al trabajador
+        trabajador = trabajadorRepository.findByUsuarioCorreo("u@a.com").orElse(null);
+        assert trabajador != null;
+        assert trabajador.getAnunciosTrabajador().contains(anuncio);
     }
 
-    @Test
-    void testeoAnuncioEConTrabajadorYEmpresa() {
-        //usuarioRepository.deleteAll();
-        //trabajadorRepository.deleteAll();
-        //empresaRepository.deleteAll();
+    /**
+     * Test para verificar la relación entre AnuncioEmpresa y Empresa.
+     @Test
+     void testAnuncioEmpresa() {
+     // Obtener la empresa del setup
+     Empresa empresa = empresaRepository.findByUsuarioCorreo("u@a1.com").orElse(null);
+     assert empresa != null;
+
+     // Crear un anuncio para la empresa
+     AnuncioEmpresa anuncio = new AnuncioEmpresa(0, "Esto es un anuncio de una Empresa", 5, 0, new Date(), null, empresa, null);
+     anuncioEmpresaRepository.save(anuncio);
+
+     // Verificar que el anuncio se creó y está asociado a la empresa
+     empresa = empresaRepository.findByUsuarioCorreo("u@a1.com").orElse(null);
+     assert empresa != null;
+     assert empresa.getAnuncioEmpresas().contains(anuncio);
+     }
+     */
 
 
-    }
+    /**
+     * Test para verificar la eliminación en cascada de Anuncios al eliminar Trabajadores o Empresas.
+     @Test
+     void testEliminarCascada() {
+     // Obtener el trabajador y la empresa del setup
+     Trabajador trabajador = trabajadorRepository.findById(1L).orElse(null);
+     Empresa empresa = empresaRepository.findById(2L).orElse(null);
+     assert trabajador != null;
+     assert empresa != null;
+
+     // Crear anuncios asociados
+     AnuncioTrabajador anuncioT = new AnuncioTrabajador(0, new Date(), "Anuncio de prueba", trabajador, null);
+     AnuncioEmpresa anuncioE = new AnuncioEmpresa(0, "Otro anuncio", 10, 0, new Date(), null, empresa, null);
+     anuncioTrabajadorRepository.save(anuncioT);
+     anuncioEmpresaRepository.save(anuncioE);
+
+     // Eliminar trabajador y empresa
+     trabajadorRepository.delete(trabajador);
+     empresaRepository.delete(empresa);
+
+     // Verificar que los anuncios asociados también fueron eliminados
+     assert anuncioTrabajadorRepository.findById(anuncioT.getIdAnuncioTrabajador()).isEmpty();
+     assert anuncioEmpresaRepository.findById(anuncioE.getIdAnuncioEmpresa()).isEmpty();
+     }
+     */
+
+
 }
 

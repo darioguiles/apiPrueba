@@ -12,21 +12,61 @@
 
   <h1>Registrate</h1>
 
-  <form class="d-flex flex-column flex-grow-1">
-    <div class="form-group">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    </div>
-    <div class="form-group mt-2">
-      <label for="exampleInputPassword1" class="form-label" >Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-check mt-2">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Submit</button>
-  </form>
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="d-flex flex-column flex-grow-1">
+      <!-- Nombre de Usuario -->
+      <div class="form-group">
+        <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreUsuario"
+          formControlName="nombreUsuario"
+          placeholder="Introduce tu nombre de usuario"
+          required
+        />
+        <div *ngIf="registroForm.get('nombreUsuario')?.invalid && registroForm.get('nombreUsuario')?.touched" class="text-danger">
+          El nombre de usuario es obligatorio y debe ser único.
+        </div>
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="form-group mt-2">
+        <label for="correo" class="form-label">Correo Electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          id="correo"
+          formControlName="correo"
+          placeholder="Introduce tu correo"
+          required
+        />
+        <div *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched" class="text-danger">
+          El correo es obligatorio y debe tener un formato válido.
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group mt-2">
+        <label for="contrasenia" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="contrasenia"
+          formControlName="contrasenia"
+          placeholder="Introduce tu contraseña"
+          required
+        />
+        <div *ngIf="registroForm.get('contrasenia')?.invalid && registroForm.get('contrasenia')?.touched" class="text-danger">
+          La contraseña es obligatoria y debe tener al menos 6 caracteres.
+        </div>
+      </div>
+
+      <!-- Botón de Enviar -->
+      <button type="submit" class="btn btn-primary mt-3" [disabled]="registroForm.invalid">
+        Registrarse
+      </button>
+    </form>
+
 
 </div>
 

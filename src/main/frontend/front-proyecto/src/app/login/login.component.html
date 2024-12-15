@@ -12,22 +12,46 @@
 
   <h1>Inicio de sesion</h1>
 
-  <form class="d-flex flex-column flex-grow-1">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <!-- Nombre de Usuario o Correo -->
     <div class="form-group">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <label for="nomUsuarioCorreo" class="form-label">Nombre de Usuario o Correo Electrónico</label>
+      <input
+        type="text"
+        class="form-control"
+        id="nomUsuarioCorreo"
+        formControlName="nomUsuarioCorreo"
+        placeholder="Introduce tu nombre de usuario o correo"
+        required
+      />
+      <div *ngIf="loginForm.get('nomUsuarioCorreo')?.invalid && loginForm.get('nomUsuarioCorreo')?.touched" class="text-danger">
+        Este campo es obligatorio.
+      </div>
     </div>
+
+    <!-- Contraseña -->
     <div class="form-group mt-2">
-      <label for="exampleInputPassword1" class="form-label" >Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      <label for="contrasenia" class="form-label">Contraseña</label>
+      <input
+        type="password"
+        class="form-control"
+        id="contrasenia"
+        formControlName="contrasenia"
+        placeholder="Introduce tu contraseña"
+        required
+      />
+      <div *ngIf="loginForm.get('contrasenia')?.invalid && loginForm.get('contrasenia')?.touched" class="text-danger">
+        La contraseña es obligatoria.
+      </div>
     </div>
-    <div class="form-check mt-2">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <a id="registro" class="mt-auto nav-link" [routerLink]="['/register']">¿Todavia no te has registrado?</a>
-    <button type="submit" class="btn btn-primary ">Submit</button>
+
+    <!-- Botón de Enviar -->
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="loginForm.invalid">
+      Iniciar Sesión
+    </button>
   </form>
+
+  <a id="registro" class="mt-auto nav-link" [routerLink]="['/register']">¿Todavia no te has registrado?</a>
 
 </div>
 

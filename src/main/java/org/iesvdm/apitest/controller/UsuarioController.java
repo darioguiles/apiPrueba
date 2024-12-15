@@ -2,6 +2,7 @@ package org.iesvdm.apitest.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.iesvdm.apitest.domain.LoginRequest;
 import org.iesvdm.apitest.domain.Usuario;
 import org.iesvdm.apitest.dto.UsuarioDto;
 import org.iesvdm.apitest.service.EmpresaService;
@@ -64,14 +65,42 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable("id") Long id) {
 
-        if(this.usuarioService.one(id).getEmpresa().getId_empresa()==id)
-        {
-            this.empresaService.delete(id);
-        } else if (this.usuarioService.one(id).getTrabajador().getId_trabajador()==id) {
-            this.trabajadorService.delete(id);
+        //Se añade esta linea porque sin ella no se podia hacer algo tan normal como borrar y controlar usuarios nuevos
+        //Estos usuarios nuevos no tienen una empresa ni trabajador asociado han entrado a probar la aplicación.
+        if (this.usuarioService.one(id).getEmpresa()!=null || this.usuarioService.one(id).getTrabajador()!=null) {
+            if (this.usuarioService.one(id).getEmpresa().getId_empresa() == id) {
+                this.empresaService.delete(id);
+            } else if (this.usuarioService.one(id).getTrabajador().getId_trabajador() == id) {
+                this.trabajadorService.delete(id);
+            }
         }
 
         this.usuarioService.delete(id);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
+
+        Usuario usuario = usuarioService.validarCredenciales(loginRequest.getNomUsuarioCorreo(), loginRequest.getPassword());
+
+        if (usuario == null) {
+            // Si no se encuentra por nombreUsuario, intenta con el correo
+            usuario = usuarioService.validarCredencialesPorCorreo(loginRequest.getNomUsuarioCorreo(), loginRequest.getPassword());
+        }
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        return ResponseEntity.ok(usuario); // Devuelve el objeto Usuario completo
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Usuario> register(@RequestBody Usuario usuario) {
+
+        if (usuario.getCorreo() == null || usuario.getContrasenia() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Usuario nuevoUsuario = usuarioService.save(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
     }
 
 }

@@ -10,12 +10,24 @@
     <div class="collapse navbar-collapse " id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 flex-fill d-flex justify-content-evenly mb-md-0 justify-content-center-md">
         <li class=" nav-item" ><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/">Inicio</a></li>
-        <li class=" nav-item" ><button class="btn btn-outline-primary border border-dark rounded-pill" type="button">Empresa</button></li>
+        <li class=" nav-item" ><button class="btn btn-outline-primary border border-dark rounded-pill" type="button" routerLink="/content">Empresa</button></li>
         <li class=" nav-item" ><button class="btn btn-outline-primary border border-dark rounded-pill" type="button">Salario</button></li>
         <li class=" nav-item" ><button class="btn btn-outline-primary border border-dark rounded-pill" type="button">Formacion</button></li>
-        <li class=" nav-item" ><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/login"><b>Empresas</b></a></li>
-        <li class=" nav-item" ><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/register"><b>Trabajadores</b></a></li>
+        <li class=" nav-item" ><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/login" type="button"><b>Empresas</b></a></li>
+        <li class=" nav-item" ><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/register" type="button"><b>Trabajadores</b></a></li>
       </ul>
+
+      <!-- Contenedor de usuario logueado -->
+      <div class="d-flex align-items-center" *ngIf="usuario">
+        <img
+          src="assets/images/blank-profile-picture-973460_1280.png"
+          alt="Imagen de Perfil"
+          class="rounded-circle me-2"
+          style="width: 40px; height: 40px;"
+        />
+        <span>{{ usuario.nombreUsuario }}</span>
+        <button class="btn btn-outline-danger ms-3" (click)="logout()">Cerrar Sesión</button>
+      </div>
     </div>
   </div>
 </nav>
