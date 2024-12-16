@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AnuncioService} from "../../services/anuncio.service";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {NgForOf, NgIf} from "@angular/common";
@@ -18,7 +18,6 @@ import {ContenidoComponent} from "../../contenido/contenido.component";
 export class AnunciosComponent implements OnInit{
   @Input() soloTrabajadores: boolean = false;
   @Input() soloEmpresas: boolean = false;
-  @Output() crearAnuncio = new EventEmitter<void>();
 
   anuncios: any[] = [];
   totalAnuncios: number = 0;
@@ -31,17 +30,54 @@ export class AnunciosComponent implements OnInit{
     this.loadAnuncios();
   }
 
-  ngOnChanges(): void {
-    this.loadAnuncios(); // Recargar anuncios cuando cambien los filtros
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['soloTrabajadores'] || changes['soloEmpresas']) {
+      this.loadAnuncios();
+    }
   }
 
   loadAnuncios() {
-    this.anuncioService.getAnuncios(this.soloTrabajadores, this.soloEmpresas, this.pageSize, this.currentPage)
-      .subscribe(data => {
-        this.anuncios = data.anuncioTrabajadores; // Mapear la respuesta a la lista de anuncios
-        this.totalAnuncios = data.totalItems;
-        this.totalPages = data.totalPages;
+    // Si solo se seleccionan anuncios de trabajadores
+    if (this.soloTrabajadores) {
+      this.anuncioService.getAnunciosTrabajadores(this.pageSize, this.currentPage).subscribe(data => {
+        this.anuncios = data.anuncioTrabajadores || []; // Cambié de "anuncioTrabajador" a "anuncioTrabajadores"
+        this.totalAnuncios = data.totalItems || 0;
+        this.totalPages = data.totalPages || 0;
+      }, error => {
+        console.error('Error al cargar anuncios de trabajadores:', error);
+        this.anuncios = [];
       });
+    }
+    // Si solo se seleccionan anuncios de empresas
+    else if (this.soloEmpresas) {
+      this.anuncioService.getAnunciosEmpresas(this.pageSize, this.currentPage).subscribe(data => {
+        this.anuncios = data.anuncioEmpresa || [];
+        this.totalAnuncios = data.totalItems || 0;
+        this.totalPages = data.totalPages || 0;
+      }, error => {
+        console.error('Error al cargar anuncios de empresas:', error);
+        this.anuncios = [];
+      });
+    }
+    // Si ninguno está marcado, cargar ambos tipos de anuncios
+    else {
+      this.anuncioService.getAnunciosTrabajadores(this.pageSize, this.currentPage).subscribe(data => {
+        this.anuncios = data.anuncioTrabajadores || []; // Cambié de "anuncioTrabajador" a "anuncioTrabajadores"
+        this.totalAnuncios = data.totalItems || 0;
+        this.totalPages = data.totalPages || 0;
+      }, error => {
+        console.error('Error al cargar anuncios de trabajadores:', error);
+        this.anuncios = [];
+      });
+
+      this.anuncioService.getAnunciosEmpresas(this.pageSize, this.currentPage).subscribe(data => {
+        this.anuncios = [...this.anuncios, ...(data.anuncioEmpresa || [])]; // Concatenar anuncios de empresas
+        this.totalAnuncios = this.anuncios.length;
+        this.totalPages = Math.ceil(this.totalAnuncios / this.pageSize); // Calcular el total de páginas
+      }, error => {
+        console.error('Error al cargar anuncios de empresas:', error);
+      });
+    }
   }
 
   onPageChange(event: PageEvent) {

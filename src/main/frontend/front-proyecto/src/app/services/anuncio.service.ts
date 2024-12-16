@@ -10,13 +10,21 @@ export class AnuncioService {
 
   constructor(private http: HttpClient) {}
 
-  getAnuncios(soloTrabajadores: boolean, soloEmpresas: boolean, pageSize: number, currentPage: number): Observable<any> {
-    let params = new HttpParams()
-      .set('soloTrabajadores', soloTrabajadores.toString())
-      .set('soloEmpresas', soloEmpresas.toString())
-      .set('page', currentPage.toString())
-      .set('size', pageSize.toString());
+  // Obtener anuncios solo de trabajadores POR DEFECTO
+  getAnunciosTrabajadores(pageSize: number, currentPage: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/trabajadores`, {
+      params: new HttpParams()
+        .set('pagina', currentPage.toString())
+        .set('tamanio', pageSize.toString())
+    });
+  }
 
-    return this.http.get<any>(this.apiUrl, { params });
+  // Obtener anuncios solo de empresas
+  getAnunciosEmpresas(pageSize: number, currentPage: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/empresas`, {
+      params: new HttpParams()
+        .set('pagina', currentPage.toString())
+        .set('tamanio', pageSize.toString())
+    });
   }
 }

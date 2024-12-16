@@ -20,7 +20,8 @@
           <div class="card-body">
             <h5 class="card-title">{{ anuncio.titulo }}</h5>
             <p class="card-text">{{ anuncio.descripcion }}</p>
-            <p class="card-text"><small class="text-muted">Publicado hace {{ anuncio.fechaPublicacion }}</small></p>
+            <!-- Falta un Ng If para controlar los anuncios-->
+            <p class="card-text"><small class="text-muted">Publicado hace {{ anuncio.fechaPublicacion  || anuncio.fechaInicio  }}</small></p>
           </div>
         </div>
       </div>
