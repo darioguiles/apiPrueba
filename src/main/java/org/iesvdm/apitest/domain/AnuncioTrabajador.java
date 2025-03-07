@@ -24,7 +24,7 @@ public class AnuncioTrabajador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long idAnuncioTrabajador;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
     private Date fechaPublicacion;
     private String descripcion;
 

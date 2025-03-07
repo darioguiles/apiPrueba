@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringExclude;
+import lombok.*;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Usar estilo nuevo
@@ -44,14 +40,14 @@ public class Usuario {
     // --> https://www.baeldung.com/jpa-one-to-one#spk-model <--
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @JsonBackReference //Funciona según las pruebas
-    @ToStringExclude
+    @ToString.Exclude
     // *** Esta anotación junto a un MapsId en el otro lado nos permiten ***
     // *** Que la relacion entre ambas sea Identificativa en BBDD ***
     @PrimaryKeyJoinColumn
     private Empresa empresa;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
-    @ToStringExclude
+    @ToString.Exclude
     @PrimaryKeyJoinColumn
     private Trabajador trabajador;
 

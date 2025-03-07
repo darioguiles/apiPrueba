@@ -31,20 +31,38 @@ public class    AnuncioTrabajadorService {
 
         //  org.springframework.data.domain public interface Pageable  Maven: org.springframework.data
 
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioTrabajador" ).ascending());
-        //Interfaces
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioTrabajador").ascending());
         Page<AnuncioTrabajador> pageAll = this.anuncioTrabajadorRepository.findAll(paginado);
 
-        Map<String,Object> response = new HashMap<>();
+        List<Map<String, Object>> anunciosConTrabajador = pageAll.getContent().stream().map(anuncio -> {
+            Map<String, Object> anuncioMap = new HashMap<>();
+            anuncioMap.put("idAnuncioTrabajador", anuncio.getIdAnuncioTrabajador());
+            anuncioMap.put("descripcion", anuncio.getDescripcion());
+            anuncioMap.put("fechaPublicacion", anuncio.getFechaPublicacion());
 
-        response.put("anuncioTrabajadores", pageAll.getContent());
+            if (anuncio.getTrabajador() != null) {
+                Map<String, Object> trabajadorMap = new HashMap<>();
+                trabajadorMap.put("id_trabajador", anuncio.getTrabajador().getId_trabajador());
+                trabajadorMap.put("nombre", anuncio.getTrabajador().getNombre());
+                trabajadorMap.put("apellidos", anuncio.getTrabajador().getApellidos());
+                trabajadorMap.put("telefono", anuncio.getTrabajador().getTelefono());
+
+                anuncioMap.put("trabajador", trabajadorMap);
+            }
+
+            return anuncioMap;
+        }).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("anuncioTrabajadores", anunciosConTrabajador);
         response.put("currentPage", pageAll.getNumber());
         response.put("totalItems", pageAll.getTotalElements());
         response.put("totalPages", pageAll.getTotalPages());
 
         return response;
-
     }
+
+
 
 
     public AnuncioTrabajador save(AnuncioTrabajador anuncioTrabajador) {

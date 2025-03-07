@@ -5,9 +5,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class gestionUser {
+export class GestionUserService {
   private apiUrl = 'http://localhost:8080/v1/data-api/usuarios'; // URL base del backend
 
+  /**
+   * Se abandona esta clase para meterlo en el servicio de Auth, dado que así
+   */
   constructor(private http: HttpClient) {}
 
   // Obtener todos los usuarios
@@ -15,9 +18,9 @@ export class gestionUser {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Crear un usuario
-  createUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, usuario);
+  //Obtener un usuario
+  getOneUsuario(id:number):Observable<any[]>{
+    return this.http.get<any[]>(`${this.apiUrl}/${id}`);
   }
 
   // Eliminar un usuario
@@ -25,7 +28,7 @@ export class gestionUser {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Actualizar un usuario
+  // Actualizar un usuario !!!TODO
   updateUsuario(id: number, usuario: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, usuario);
   }

@@ -2,43 +2,44 @@
   <!-- Si no hay anuncios -->
   <div *ngIf="anuncios.length === 0" class="text-center mt-4">
     <p>Vaya, parece que no hay ningún anuncio.</p>
-    <button class="btn btn-primary" (click)="onCreateAnuncio()">Crear Anuncio</button>
+    <button class="btn btn-primary" (click)="crearAnuncio()">Crear Anuncio</button>
   </div>
 
-  <!-- Botón de Crear Anuncio cuando hay anuncios visibles ? para -->
+  <!-- Botón de Crear Anuncio cuando hay anuncios visibles -->
   <div *ngIf="anuncios.length > 0" class="d-flex justify-content-center text-end mt-4 mb-4">
-    <button class="btn btn-primary" (click)="onCreateAnuncio()">Crear Anuncio</button>
+    <button class="btn btn-primary" (click)="crearAnuncio()">Crear Anuncio</button>
   </div>
 
-    <!-- Mostrar los anuncios -->
-    <div *ngFor="let anuncio of anuncios" class="card mb-3 border border-grey" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-4 d-flex align-items-center justify-content-center">
-          <img src="assets/images/building-6702046_1280.png" class="img-fluid pfp" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">{{ anuncio.titulo }}</h5>
-            <p class="card-text">{{ anuncio.descripcion }}</p>
-            <!-- Falta un Ng If para controlar los anuncios-->
-            <p class="card-text"><small class="text-muted">Publicado hace {{ anuncio.fechaPublicacion  || anuncio.fechaInicio  }}</small></p>
-          </div>
+  <!-- Mostrar Anuncios -->
+  <div *ngFor="let anuncio of anuncios" class="card mb-3 shadow-sm border border-grey" style="max-width: 600px;">
+    <div class="row g-0">
+      <div class="col-4 d-flex align-items-center justify-content-center">
+        <img src="assets/images/building-6702046_1280.png" class="img-fluid rounded-circle" alt="Anuncio">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ anuncio.descripcion }}</h5>
+          <p class="card-text">{{ anuncio.descripcion }}</p>
+          <p class="card-text">
+            Publicado por:
+            <span *ngIf="anuncio.trabajador">{{ anuncio.trabajador?.nombre }} {{ anuncio.trabajador?.apellidos }}(Trabajador)</span>
+            <span *ngIf="anuncio.empresa">{{ anuncio.empresa?.nombre }} (Empresa)</span>
+          </p>
+          <p class="card-text">
+            <small class="text-muted">Publicado el: {{ anuncio.fechaPublicacion || anuncio.fechaInicio }}</small>
+          </p>
+          <button class="btn btn-outline-warning btn-sm"  *ngIf="esPropietario(anuncio)" (click)="editarAnuncio(anuncio)">Editar</button>
         </div>
       </div>
     </div>
-
-      <!-- Paginación -->
-      <mat-paginator
-        [length]="totalAnuncios"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPageChange($event)">
-      </mat-paginator>
-
-
   </div>
 
+  <!-- Paginación -->
+  <mat-paginator
+    [length]="totalAnuncios"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
 
-
-
-
+</div>

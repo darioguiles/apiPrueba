@@ -13,34 +13,27 @@
   <div class="section d-lg-flex justify-content-between">
 
 
-      <!-- Filtros -->
-      <div class="border border-grey  d-flex flex-column align-items-center" id="filtrado" style="max-height: 130px; overflow-y: auto;">
-        <h2>Filtros</h2>
-        <form>
-          <div class="d-flex flex-column align-items-center">
-          <div class="form-check form-check-inline">
-            <input type="checkbox"
-                   name="trabajadoresCheckbox"
-                   class="form-check-input" id="trabajadoresCheckbox" [(ngModel)]="soloTrabajadores" (change)="onCheckboxChange()" >
-            <label class="form-check-label" for="trabajadoresCheckbox">Anuncios de Trabajadores</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input type="checkbox"
-                   name="empresasCheckbox"
-                   class="form-check-input" id="empresasCheckbox" [(ngModel)]="soloEmpresas" (change)="onCheckboxChange()" >
-            <label class="form-check-label" for="empresasCheckbox">Anuncios de Empresas</label>
-          </div>
-            </div>
-        </form>
-      </div>
+    <!-- Filtros -->
+    <div class="border border-grey d-flex flex-column align-items-center" id="filtrado" style="max-height: 130px; overflow-y: auto;">
+      <h2>Filtros</h2>
+      <form>
+        <div class="d-flex flex-column align-items-center">
+          <label for="filtroAnuncios" class="mb-2">Mostrar:</label>
+          <select id="filtroAnuncios" class="form-select border-dark rounded" name="filtroAnuncios"
+                  [(ngModel)]="filtroSeleccionado" (change)="onFiltroChange()">
+            <option value="todos" selected>Todos</option>
+            <option value="empresa">Empresas</option>
+            <option value="trabajador">Trabajadores</option>
+          </select>
+        </div>
+      </form>
+    </div>
 
 
     <!-- Componente Anuncios -->
     <div id="content" class="d-flex flex-column align-items-center flex-grow-1 mt-md-4">
       <app-anuncios
-        [soloTrabajadores]="soloTrabajadores"
-        [soloEmpresas]="soloEmpresas">
+        [filtroSeleccionado]="filtroSeleccionado">
       </app-anuncios>
     </div>
 

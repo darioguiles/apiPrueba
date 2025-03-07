@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -32,8 +29,9 @@ public class Empresa {
     private String telefono;
     
     @OneToOne
-    @JsonManagedReference
+    @JsonIgnore
     @MapsId
+    @ToString.Exclude
     private Usuario usuario;
 
     @OneToMany (mappedBy = "empresa", cascade = CascadeType.REMOVE, orphanRemoval = true)

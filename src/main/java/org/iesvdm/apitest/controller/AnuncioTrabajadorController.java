@@ -26,7 +26,7 @@ public class AnuncioTrabajadorController {
 
     @GetMapping(value = {"","/"}, params = {"!buscar", "!ordenar", "!pagina", "!tamanio"})
     public List<AnuncioTrabajador> all() {
-        log.info("Accediendo a todas los trabajadores");
+        log.info("Accediendo a todos los AnunciosTrabajadores");
         return this.anuncioTrabajadorService.all();
         // TODO DTO datos del anuncio
 
@@ -43,8 +43,8 @@ public class AnuncioTrabajadorController {
     }
     @GetMapping(value = {"","/"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
-            , @RequestParam(value = "tamanio" , defaultValue = "3") int tamanio) {
-        log.info("Accediendo a todas las categorias con paginacion");
+            , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
+        log.info("Accediendo a todos los anunciosTrabajador con paginacion");
 
         Map<String, Object> responseAll = this.anuncioTrabajadorService.findAll(pagina, tamanio);
 

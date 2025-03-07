@@ -1,1 +1,127 @@
-<p>usuarios works!</p>
+<div class="container mt-4" *ngIf="usuario">
+  <h2 class="text-center">Mi Perfil</h2>
+
+  <!-- Tarjeta de datos del usuario -->
+  <div class="card p-4 shadow-sm mx-auto w-100" style="max-width: 600px;">
+    <h4>Mis Datos</h4>
+    <form [formGroup]="usuarioForm" (ngSubmit)="guardarCambios()">
+
+      <!-- Nombre de usuario -->
+      <div class="mb-3">
+        <label class="form-label">Nombre de usuario</label>
+        <input type="text" class="form-control" formControlName="nomUsuario">
+        <small *ngIf="nombreUsuarioExiste" class="text-danger">Este nombre ya está en uso</small>
+      </div>
+
+      <!-- Correo electrónico -->
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" formControlName="correo">
+        <small *ngIf="correoExiste" class="text-danger">Este correo ya está en uso</small>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="mb-3">
+        <label class="form-label">Teléfono</label>
+        <input type="text" class="form-control" formControlName="telefono">
+      </div>
+
+      <!-- Datos de Trabajador -->
+      <div *ngIf="esTrabajador">
+        <h5>Datos del Trabajador</h5>
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" formControlName="nombreTrabajador">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" class="form-control" formControlName="apellidosTrabajador">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Información</label>
+          <textarea class="form-control" formControlName="informacionTrabajador"></textarea>
+        </div>
+      </div>
+
+      <!-- Datos de Empresa -->
+      <div *ngIf="esEmpresa">
+        <h5>Datos de la Empresa</h5>
+        <div class="mb-3">
+          <label class="form-label">Nombre de la Empresa</label>
+          <input type="text" class="form-control" formControlName="nombreEmpresa">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control" formControlName="descripcionEmpresa"></textarea>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-success me-2"
+                [disabled]="usuarioForm.invalid || nombreUsuarioExiste || correoExiste">
+          Guardar Cambios
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmarEliminarUsuario()">
+          Eliminar Cuenta
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Mis Anuncios -->
+  <h4 class="mt-5" style="justify-self: center">Mis Anuncios</h4>
+  <div class="d-flex flex-column flex-md-row gap-3 mx-auto w-100" style="max-width: 600px;">
+
+    <!-- Anuncios de Empresa -->
+    <div *ngIf="usuario?.empresa" class="flex-grow-1 p-3 border">
+      <h5>Anuncios de Empresa</h5>
+      <ng-container *ngIf="usuario.empresa.anuncioEmpresas?.length > 0; else noAnunciosEmpresa">
+        <div class="card mb-3 border border-grey" *ngFor="let anuncio of usuario.empresa.anuncioEmpresas">
+          <div class="row g-0">
+            <div class="col-4 d-flex align-items-center justify-content-center">
+              <img src="assets/images/building-6702046_1280.png" class="img-fluid pfp" alt="Empresa">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Anuncio de Empresa</h5>
+                <p class="card-text">{{ anuncio.descripcion }}</p>
+                <p class="card-text"><small class="text-muted">Publicado el {{ anuncio.fechaInicio }}</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noAnunciosEmpresa>
+        <p>No tienes anuncios de empresa.</p>
+      </ng-template>
+    </div>
+
+    <!-- Anuncios de Trabajador -->
+    <div *ngIf="usuario?.trabajador" class="flex-grow-1 p-3 border">
+      <h5>Anuncios de Trabajador</h5>
+      <ng-container *ngIf="usuario.trabajador.anunciosTrabajador?.length > 0; else noAnunciosTrabajador">
+        <div class="card mb-3 border border-grey" *ngFor="let anuncio of usuario.trabajador.anunciosTrabajador">
+          <div class="row g-0">
+            <div class="col-4 d-flex align-items-center justify-content-center">
+              <img src="assets/images/blank-profile-picture-973460_1280.png" class="img-fluid pfp" alt="Trabajador">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Anuncio de Trabajador</h5>
+                <p class="card-text">{{ anuncio.descripcion }}</p>
+                <p class="card-text"><small class="text-muted">Publicado el {{ anuncio.fechaPublicacion }}</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noAnunciosTrabajador>
+        <p>No tienes anuncios de trabajador.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

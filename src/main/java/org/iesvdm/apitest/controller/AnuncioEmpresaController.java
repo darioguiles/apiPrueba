@@ -28,7 +28,7 @@ public class AnuncioEmpresaController {
 
     @GetMapping(value = {"","/"}, params = {"!buscar", "!ordenar", "!pagina", "!tamanio"})
     public List<AnuncioEmpresa> all() {
-        log.info("Accediendo a todas los trabajadores");
+        log.info("Accediendo a todas los anuncios empresas");
         return this.anuncioEmpresaService.all();
         // TODO anuncios y los aplicados a este o quien lo hace ¿?
 
@@ -37,7 +37,7 @@ public class AnuncioEmpresaController {
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<AnuncioEmpresa> all(@RequestParam("buscar") Optional<String> buscarOpc
             , @RequestParam("ordenar") Optional<String> ordenarOpt) {
-        log.info("Accediendo a todas los trabajadores con filtro buscar: %s y ordenar");
+        log.info("Accediendo a todas los anuncioempresa con filtro buscar: %s y ordenar");
         buscarOpc.orElse("VOID");
         ordenarOpt.orElse("VOID");
 
@@ -45,8 +45,8 @@ public class AnuncioEmpresaController {
     }
     @GetMapping(value = {"","/"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
-            , @RequestParam(value = "tamanio" , defaultValue = "3") int tamanio) {
-        log.info("Accediendo a todas las categorias con paginacion");
+            , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
+        log.info("Accediendo a todas las anuncioEmpresa con paginacion");
 
         Map<String, Object> responseAll = this.anuncioEmpresaService.findAll(pagina, tamanio);
 

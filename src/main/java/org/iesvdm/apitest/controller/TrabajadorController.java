@@ -1,4 +1,5 @@
 package org.iesvdm.apitest.controller;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.Trabajador;
 import org.iesvdm.apitest.service.TrabajadorService;
@@ -14,8 +15,8 @@ import java.util.Optional;
 @RestController //Anotacion que extiende las capacidades de Controller, proporcionando
 //Compatibilidad con la Api Rest y la seriealizacion y deserializacion con Jackson
 @CrossOrigin(origins = "http://localhost:4200") //<- Origen de la petición del frontend, hay que permitir la entrada
-//desde el back para ir al front
 @RequestMapping("/v1/data-api/trabajadores")
+@Tag(name = "Trabajadores", description = "API para la gestión de trabajadores") //Nomenclatura Swagger
 public class TrabajadorController {
     private final TrabajadorService trabajadorService;
     public TrabajadorController(TrabajadorService trabajadorService) {
@@ -25,11 +26,6 @@ public class TrabajadorController {
     public List<Trabajador> all() {
         log.info("Accediendo a todas los trabajadores");
         return this.trabajadorService.all();
-        // TODO Crear DTO Para el numero de anuncios para trabajador y empresa
-        /*List<TrabajadorDTO> trabajadorDTOList = listaT.stream()
-                .map(TrabajadorDTO::new)
-                .collect(Collectors.toList());
-        * */
     }
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<Trabajador> all(@RequestParam("buscar") Optional<String> buscarOpc
@@ -42,8 +38,8 @@ public class TrabajadorController {
     }
     @GetMapping(value = {"","/"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
-            , @RequestParam(value = "tamanio" , defaultValue = "3") int tamanio) {
-        log.info("Accediendo a todas las categorias con paginacion");
+            , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
+        log.info("Accediendo a todas los anuncioEmpresa con paginacion");
 
         Map<String, Object> responseAll = this.trabajadorService.findAll(pagina, tamanio);
 
@@ -53,6 +49,16 @@ public class TrabajadorController {
     public Trabajador newTrabajador(@RequestBody Trabajador trabajador) {
         return this.trabajadorService.save(trabajador);
     }
+
+    @PostMapping("/createTrabajador")
+    public ResponseEntity<Trabajador> createTrabajador(@RequestBody Trabajador trabajador) {
+        if (trabajador.getUsuario() == null || trabajador.getUsuario().getIdUsuario() == 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Trabajador savedTrabajador = this.trabajadorService.save(trabajador);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTrabajador);
+    }
+
     @GetMapping("/{id}")
     public Trabajador one(@PathVariable("id") Long id) {
         return this.trabajadorService.one(id);

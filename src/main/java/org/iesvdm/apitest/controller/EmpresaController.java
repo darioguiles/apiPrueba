@@ -1,4 +1,5 @@
 package org.iesvdm.apitest.controller;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.Empresa;
 import org.iesvdm.apitest.service.EmpresaService;
@@ -14,6 +15,7 @@ import java.util.Optional;
 //Compatibilidad con la Api Rest y la seriealizacion y deserializacion con Jackson
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/v1/data-api/empresas")
+@Tag(name = "Empresa", description = "API para la gestión de Empresas") //Nomenclatura Swagger
 public class EmpresaController {
     private final EmpresaService empresaService;
     public EmpresaController(EmpresaService empresaService) { this.empresaService = empresaService;}
@@ -21,11 +23,6 @@ public class EmpresaController {
     public List<Empresa> all() {
         log.info("Accediendo a todas las empresas");
         return this.empresaService.all();
-
-        // TODO Crear DTO Para el numero de anuncios para trabajador y empresa
-        /*List<EmpresaDTO> empresaDTOList = listaT.stream()
-                .map(EmpresaDTO::new)
-                .collect(Collectors.toList()); * */
     }
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<Empresa> all(@RequestParam("buscar") Optional<String> buscarOpc
@@ -44,7 +41,19 @@ public class EmpresaController {
         return ResponseEntity.ok(responseAll);
     }
     @PostMapping({"","/"})
-    public Empresa newEmpresa(@RequestBody Empresa empresa) { return this.empresaService.save(empresa);}
+    public Empresa newEmpresa(@RequestBody Empresa empresa) {
+        return this.empresaService.save(empresa);
+    }
+
+    @PostMapping("/createEmpresa")
+    public ResponseEntity<Empresa> createEmpresa(@RequestBody Empresa empresa) {
+        if (empresa.getUsuario() == null || empresa.getUsuario().getIdUsuario() == 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Empresa savedEmpresa = this.empresaService.save(empresa);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmpresa);
+    }
+
     @GetMapping("/{id}")
     public Empresa one(@PathVariable("id") Long id) { return this.empresaService.one(id);}
     @PutMapping("/{id}")

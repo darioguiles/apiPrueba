@@ -23,7 +23,8 @@ public class UsuarioDto {
     private String correo;
 
     private String contrasenia;
-    private String rutapfp;private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
+    private String rutapfp;
+    private boolean esAdmin; //<-- Este booleano es para definir si el usuario es administrador o no
 
     private Trabajador trabajador;
     private Empresa empresa;

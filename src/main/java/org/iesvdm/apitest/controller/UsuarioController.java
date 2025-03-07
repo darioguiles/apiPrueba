@@ -1,18 +1,27 @@
 package org.iesvdm.apitest.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.iesvdm.apitest.domain.LoginRequest;
-import org.iesvdm.apitest.domain.Usuario;
+import org.iesvdm.apitest.domain.*;
 import org.iesvdm.apitest.dto.UsuarioDto;
+import org.iesvdm.apitest.repository.EmpresaRepository;
+import org.iesvdm.apitest.repository.TrabajadorRepository;
+import org.iesvdm.apitest.repository.UsuarioRepository;
 import org.iesvdm.apitest.service.EmpresaService;
 import org.iesvdm.apitest.service.TrabajadorService;
 import org.iesvdm.apitest.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,18 +32,31 @@ import java.util.stream.Collectors;
 //Compatibilidad con la Api Rest y la seriealizacion y deserializacion con Jackson
 @CrossOrigin(origins = "http://localhost:4200") //<- Origen de la petición del frontend, hay que permitir la entrada
 //desde el back para ir al front
-@RequestMapping("/v1/data-api/usuarios") 
+@RequestMapping("/v1/data-api/usuarios")
+@Tag(name = "Usuarios", description = "API para la gestión de usuarios") //Nomenclatura Swagger
 public class UsuarioController {
+
 
     @Autowired
     TrabajadorService trabajadorService;
     @Autowired
     EmpresaService empresaService;
 
+    @Autowired
+    TrabajadorRepository trabajadorRepository;
+    @Autowired
+    EmpresaRepository empresaRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
+
         this.usuarioService = usuarioService;
+
     }
 
     @GetMapping(value = {"","/"})
@@ -44,11 +66,18 @@ public class UsuarioController {
                 .collect(Collectors.toList());
     }
 
+
     @PostMapping({"","/"})
     public Usuario newUsuario(@RequestBody Usuario usuario) {
         return this.usuarioService.save(usuario);
     }
 
+
+    @Operation(summary = "Obtiene un usuario por ID", description = "Devuelve los datos del usuario correspondiente al ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @GetMapping("/{id}")
     public Usuario one(@PathVariable("id") Long id) {
         return this.usuarioService.one(id);
@@ -64,43 +93,100 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable("id") Long id) {
+        // Fetch the Usuario entity
+        Usuario usuario = this.usuarioService.one(id);
 
-        //Se añade esta linea porque sin ella no se podia hacer algo tan normal como borrar y controlar usuarios nuevos
-        //Estos usuarios nuevos no tienen una empresa ni trabajador asociado han entrado a probar la aplicación.
-        if (this.usuarioService.one(id).getEmpresa()!=null || this.usuarioService.one(id).getTrabajador()!=null) {
-            if (this.usuarioService.one(id).getEmpresa().getId_empresa() == id) {
-                this.empresaService.delete(id);
-            } else if (this.usuarioService.one(id).getTrabajador().getId_trabajador() == id) {
-                this.trabajadorService.delete(id);
-            }
+        // Check if the Usuario exists
+        if (usuario == null) {
+            throw new ResourceNotFoundException("Usuario not found with id: " + id);
         }
 
+        // Clean up Many-to-Many relationships
+        if (usuario.getTrabajador() != null) {
+            Trabajador trabajador = usuario.getTrabajador();
+            trabajador.getAnunciosAplicados().clear(); // Clear the Many-to-Many relationship
+            trabajadorRepository.save(trabajador); // Save the changes
+        }
+
+        if (usuario.getEmpresa() != null) {
+            Empresa empresa = usuario.getEmpresa();
+            empresa.getAnunciosInteresado().clear(); // Clear the Many-to-Many relationship
+            empresaRepository.save(empresa); // Save the changes
+        }
+
+        // Delete the Usuario (this will cascade and delete Trabajador/Empresa due to CascadeType.REMOVE)
         this.usuarioService.delete(id);
     }
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
 
+        //Valida que el usuario/correo utilizado existe y que la contraseña sea la misma que en BD
         Usuario usuario = usuarioService.validarCredenciales(loginRequest.getNomUsuarioCorreo(), loginRequest.getPassword());
 
-        if (usuario == null) {
-            // Si no se encuentra por nombreUsuario, intenta con el correo
-            usuario = usuarioService.validarCredencialesPorCorreo(loginRequest.getNomUsuarioCorreo(), loginRequest.getPassword());
-        }
-
+        //Se hacia un doble hasheo
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         return ResponseEntity.ok(usuario); // Devuelve el objeto Usuario completo
+
     }
 
+    @Operation(summary = "Registra un nuevo usuario", description = "Crea un usuario en el sistema y devuelve el usuario creado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos en la solicitud"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping("/register")
     public ResponseEntity<Usuario> register(@RequestBody Usuario usuario) {
 
-        if (usuario.getCorreo() == null || usuario.getContrasenia() == null) {
-            return ResponseEntity.badRequest().build();
+        // Validar campos esenciales
+        if (usuario.getCorreo() == null || usuario.getContrasenia() == null || usuario.getNomUsuario() == null) {
+            return ResponseEntity.badRequest().body(null);
         }
-        Usuario nuevoUsuario = usuarioService.save(usuario);
+
+
+        // Crear el usuario sin referencias a Trabajador o Empresa
+        Usuario nuevoUsuario = new Usuario(
+                0,
+                usuario.getNomUsuario(),
+                usuario.getCorreo(),
+                usuario.getContrasenia(),
+                usuario.getRutapfp(),
+                usuario.isEsAdmin(),
+                null,
+                null
+        );
+
+        // If Trabajador data is provided, create and link it to the saved Usuario
+        if (usuario.getTrabajador() != null) {
+            Trabajador trabajador = usuario.getTrabajador();
+            trabajador.setUsuario(nuevoUsuario); // Link to the saved Usuario
+            trabajadorRepository.save(trabajador);
+        }
+
+        // If Empresa data is provided, create and link it to the saved Usuario
+        if (usuario.getEmpresa() != null) {
+            Empresa empresa = usuario.getEmpresa();
+            empresa.setUsuario(nuevoUsuario); // Link to the saved Usuario
+            empresaRepository.save(empresa);
+        }
+
+        usuarioService.save(nuevoUsuario);//Guardamos el nuevo! Nueva password!!
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+    }
+
+    @GetMapping("/verificar-nombre")
+    public ResponseEntity<Boolean> verificarNombreUsuario(@RequestParam String nomUsuario) {
+        boolean existe = usuarioRepository.existsByNomUsuario(nomUsuario);
+        return ResponseEntity.ok(existe);
+    }
+
+    @GetMapping("/verificar-correo")
+    public ResponseEntity<Boolean> verificarCorreo(@RequestParam String correo) {
+        boolean existe = usuarioRepository.existsByCorreo(correo);
+        return ResponseEntity.ok(existe);
     }
 
 }

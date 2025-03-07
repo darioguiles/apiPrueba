@@ -39,8 +39,10 @@ export class LoginComponent {
       this.authService.login(loginRequest.nomUsuarioCorreo, loginRequest.password).subscribe({
         next: (usuario) => {
           // Guardar el usuario en el localStorage
-          localStorage.setItem('usuario', JSON.stringify(usuario));
-          this.router.navigate(['/']); // Redirigir al inicio tras login
+          //console.log('Login successful:', usuario); // Debugging
+          this.authService.setUsuario(usuario); // Update user state and emit event
+          this.router.navigate(['/landing']); // Redirigir al inicio tras login
+
         },
         error: (err) => {
           console.error('Error en el login:', err);

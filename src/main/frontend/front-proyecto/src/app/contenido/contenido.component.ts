@@ -17,20 +17,10 @@ import {HttpClientModule} from "@angular/common/http";
   providers:[AnuncioService]
 })
 export class ContenidoComponent {
-
-  soloTrabajadores: boolean = false;
-  soloEmpresas: boolean = false;
-
-  constructor() {}
-
-  onCheckboxChange() {
-    console.log('Mostrando anuncios con filtros:', this.soloTrabajadores, this.soloEmpresas);
-
-  }
+  filtroSeleccionado: string = 'todos'; // Valor inicial
 
 
-  onCreateAnuncio() {
-    // Redirigir o abrir el formulario para crear un anuncio
-    console.log('Crear nuevo anuncio');
+  onFiltroChange(): void {
+    console.log(`Filtro cambiado a: ${this.filtroSeleccionado}`);
   }
 }

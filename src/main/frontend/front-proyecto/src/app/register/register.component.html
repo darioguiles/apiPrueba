@@ -7,66 +7,107 @@
 </head>
 <body>
 
+<div class="container-lg d-flex flex-column align-items-center mt-5">
 
-<div class="container-lg d-flex flex-column align-items-center">
+  <h2 class="mb-4">Registro de Usuario</h2>
 
-  <h1>Registrate</h1>
+  <!-- Formulario Principal -->
+  <form class="d-flex flex-column gap-3 w-50" (ngSubmit)="onRegister()" [formGroup]="registerForm" novalidate>
 
-    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="d-flex flex-column flex-grow-1">
-      <!-- Nombre de Usuario -->
+    <!-- Nombre de Usuario -->
+    <div class="form-group">
+      <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+      <input type="text" class="form-control" id="nombreUsuario" formControlName="nombreUsuario" placeholder="Introduce tu usuario">
+      <div class="text-danger" *ngIf="registerForm.get('nombreUsuario')?.invalid && registerForm.get('nombreUsuario')?.touched">
+        El nombre de usuario no debe contener caracteres especiales.
+      </div>
+    </div>
+
+    <!-- Correo Electrónico -->
+    <div class="form-group">
+      <label for="correo" class="form-label">Correo Electrónico</label>
+      <input type="email" class="form-control" id="correo" formControlName="correo" placeholder="Introduce tu correo">
+      <div class="text-danger" *ngIf="registerForm.get('correo')?.invalid && registerForm.get('correo')?.touched">
+        Introduce un correo válido
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="form-group">
+      <label for="contrasenia" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="contrasenia" formControlName="contrasenia" placeholder="Introduce tu contraseña">
+      <div class="text-danger" *ngIf="registerForm.get('contrasenia')?.invalid && registerForm.get('contrasenia')?.touched">
+        La contraseña debe tener al menos 6 caracteres.
+      </div>
+    </div>
+
+    <!-- Selector de Perfil -->
+    <div class="form-group">
+      <label for="perfil" class="form-label">Perfil</label>
+      <select id="perfil" class="form-select" formControlName="perfil" (change)="onPerfilChange()">
+        <option value="">Seleccionar Perfil</option>
+        <option value="trabajador">Trabajador</option>
+        <option value="empresa">Empresa</option>
+      </select>
+      <div class="text-danger" *ngIf="registerForm.get('perfil')?.invalid && registerForm.get('perfil')?.touched">
+        Debes seleccionar un perfil.
+      </div>
+    </div>
+
+    <!-- Campos Adicionales para Trabajador -->
+    <div *ngIf="perfilSeleccionado === 'trabajador'" class="mt-3">
       <div class="form-group">
-        <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
-        <input
-          type="text"
-          class="form-control"
-          id="nombreUsuario"
-          formControlName="nombreUsuario"
-          placeholder="Introduce tu nombre de usuario"
-          required
-        />
-        <div *ngIf="registroForm.get('nombreUsuario')?.invalid && registroForm.get('nombreUsuario')?.touched" class="text-danger">
-          El nombre de usuario es obligatorio y debe ser único.
+        <label for="nombreTrabajador" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombreTrabajador" formControlName="nombreTrabajador">
+        <div class="text-danger" *ngIf="registerForm.get('nombreTrabajador')?.invalid && registerForm.get('nombreTrabajador')?.touched">
+          Nombre inválido.
         </div>
       </div>
-
-      <!-- Correo Electrónico -->
-      <div class="form-group mt-2">
-        <label for="correo" class="form-label">Correo Electrónico</label>
-        <input
-          type="email"
-          class="form-control"
-          id="correo"
-          formControlName="correo"
-          placeholder="Introduce tu correo"
-          required
-        />
-        <div *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched" class="text-danger">
-          El correo es obligatorio y debe tener un formato válido.
+      <div class="form-group">
+        <label for="apellidosTrabajador" class="form-label">Apellidos</label>
+        <input type="text" class="form-control" id="apellidosTrabajador" formControlName="apellidosTrabajador">
+        <div class="text-danger" *ngIf="registerForm.get('apellidosTrabajador')?.invalid && registerForm.get('apellidosTrabajador')?.touched">
+          Apellidos inválidos.
         </div>
       </div>
-
-      <!-- Contraseña -->
-      <div class="form-group mt-2">
-        <label for="contrasenia" class="form-label">Contraseña</label>
-        <input
-          type="password"
-          class="form-control"
-          id="contrasenia"
-          formControlName="contrasenia"
-          placeholder="Introduce tu contraseña"
-          required
-        />
-        <div *ngIf="registroForm.get('contrasenia')?.invalid && registroForm.get('contrasenia')?.touched" class="text-danger">
-          La contraseña es obligatoria y debe tener al menos 6 caracteres.
+      <div class="form-group">
+        <label for="informacionTrabajador" class="form-label">Información Adicional</label>
+        <input type="text" class="form-control" id="informacionTrabajador" formControlName="informacionTrabajador">
+      </div>
+      <div class="form-group">
+        <label for="telefonoTrabajador" class="form-label">Teléfono</label>
+        <input type="text" class="form-control" id="telefonoTrabajador" formControlName="telefonoTrabajador">
+        <div class="text-danger" *ngIf="registerForm.get('telefonoTrabajador')?.invalid && registerForm.get('telefonoTrabajador')?.touched">
+          El teléfono debe tener 9 dígitos numéricos.
         </div>
       </div>
+    </div>
 
-      <!-- Botón de Enviar -->
-      <button type="submit" class="btn btn-primary mt-3" [disabled]="registroForm.invalid">
-        Registrarse
-      </button>
-    </form>
+    <!-- Campos Adicionales para Empresa -->
+    <div *ngIf="perfilSeleccionado === 'empresa'" class="mt-3">
+      <div class="form-group">
+        <label for="nombreEmpresa" class="form-label">Nombre de la Empresa</label>
+        <input type="text" class="form-control" id="nombreEmpresa" formControlName="nombreEmpresa">
+        <div class="text-danger" *ngIf="registerForm.get('nombreEmpresa')?.invalid && registerForm.get('nombreEmpresa')?.touched">
+          Nombre de empresa inválido.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="descripcionEmpresa" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="descripcionEmpresa" formControlName="descripcionEmpresa">
+      </div>
+      <div class="form-group">
+        <label for="telefonoEmpresa" class="form-label">Teléfono</label>
+        <input type="text" class="form-control" id="telefonoEmpresa" formControlName="telefonoEmpresa">
+        <div class="text-danger" *ngIf="registerForm.get('telefonoEmpresa')?.invalid && registerForm.get('telefonoEmpresa')?.touched">
+          El teléfono debe tener 9 dígitos numéricos.
+        </div>
+      </div>
+    </div>
 
+    <!-- Botón de Registro -->
+    <button type="submit" class="btn btn-primary mt-4" [disabled]="!registerForm.valid">Registrarse</button>
+  </form>
 
 </div>
 

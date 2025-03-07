@@ -1,4 +1,4 @@
 package org.iesvdm.apitest.dto;
 
-public class TrabajadorDTO {
+public class TrabajadorDto {
 }
