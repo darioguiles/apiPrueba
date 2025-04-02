@@ -41,7 +41,7 @@ public class AnuncioTrabajadorController {
 
         return this.anuncioTrabajadorService.allByQueryFiltersStream(buscarOpc, ordenarOpt);
     }
-    @GetMapping(value = {"","/"})
+    @GetMapping(value = {"","/"}, params = {"!ultimoId"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
             , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
         log.info("Accediendo a todos los anunciosTrabajador con paginacion");
@@ -50,6 +50,10 @@ public class AnuncioTrabajadorController {
 
         return ResponseEntity.ok(responseAll);
     }
+
+
+
+
     @PostMapping({"","/"})
     public AnuncioTrabajador newTrabajador(@RequestBody AnuncioTrabajador anuncioTrabajador) {
         return this.anuncioTrabajadorService.save(anuncioTrabajador);
@@ -66,6 +70,7 @@ public class AnuncioTrabajadorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteTrabajador(@PathVariable("id") Long id) {
+        //log.info("Se borra el anuncio: "+ this.anuncioTrabajadorService.one(id) +"\n Con id: " + id);
         this.anuncioTrabajadorService.delete(id);
     }
 

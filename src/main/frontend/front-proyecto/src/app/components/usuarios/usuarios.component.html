@@ -24,6 +24,8 @@
       <div class="mb-3">
         <label class="form-label">Teléfono</label>
         <input type="text" class="form-control" formControlName="telefono">
+        <small *ngIf="telfInvalido" class="text-danger">Este Telefono no tiene el formato correcto <br>
+          (9 digitos enteros)</small>
       </div>
 
       <!-- Datos de Trabajador -->

@@ -2,7 +2,15 @@
 //Test
 @import "assets/bootstrap-5.0.2/scss/bootstrap";
 
+.nuevo-anuncio {
+  background-color: #f8f816 !important; /* Amarillo claro */
+  animation: fadeOut 3s ease-in-out 5s forwards; /* Se desvanece después de 5 segundos */
+}
 
+@keyframes fadeOut {
+  from { background-color: #f8f816; }
+  to { background-color: transparent; }
+}
 
 .logo{
   width: 160px;

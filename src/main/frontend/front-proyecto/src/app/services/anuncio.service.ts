@@ -28,6 +28,30 @@ export class AnuncioService {
     });
   }
 
+  getAnunciosTrabajadoresTd(pageSize: number, currentPage: number, ultimoId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}trabajadores`, {
+      params: new HttpParams()
+        .set('pagina', currentPage.toString())
+        .set('tamanio', pageSize.toString())
+        .set('ultimoId', pageSize.toString())
+    });
+  }
+
+  // Obtener anuncios solo de empresas
+  getAnunciosEmpresasTd(pageSize: number, currentPage: number, ultimoId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}empresa`, {
+      params: new HttpParams()
+        .set('pagina', currentPage.toString())
+        .set('tamanio', pageSize.toString())
+        .set('ultimoId', pageSize.toString())
+    });
+  }
+
+  // DIFERENTE PORQUE ES UN EP ESPECIAL!
+  getTodosLosAnuncios(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}s/todos`);
+  }
+
   // Crear un anuncio
   crearAnuncio(anuncio: any): Observable<any> {
     let endpoint = '';
@@ -50,9 +74,9 @@ export class AnuncioService {
     let endpoint = '';
 
     if (anuncio.trabajador) {
-      endpoint = `${this.apiUrl}/anunciostrabajador/${id}`;
+      endpoint = `${this.apiUrl}trabajadores/${id}`;
     } else if (anuncio.empresa) {
-      endpoint = `${this.apiUrl}/anunciosempresa/${id}`;
+      endpoint = `${this.apiUrl}empresa/${id}`;
     } else {
       throw new Error('Debe especificarse un trabajador o empresa para editar el anuncio.');
     }
@@ -62,14 +86,14 @@ export class AnuncioService {
     });
   }
 
-  borrarAnuncio(id: number, anuncio: any):Observable<any> {
+  borrarAnuncio(id: number, anuncio:any):Observable<any> {
     let endpoint = '';
 
-    if (anuncio.trabajador) {
-      endpoint = `${this.apiUrl}/anunciostrabajador/${id}`;
+    if (anuncio==="trabajador") {
+      endpoint = `${this.apiUrl}trabajadores/${id}`;
 
-    } else if (anuncio.empresa) {
-      endpoint = `${this.apiUrl}/anunciosempresa/${id}`;
+    } else if (anuncio==="empresa") {
+      endpoint = `${this.apiUrl}empresa/${id}`;
     } else {
       throw new Error('Debe especificarse un trabajador o empresa para Borrar el anuncio.');
     }

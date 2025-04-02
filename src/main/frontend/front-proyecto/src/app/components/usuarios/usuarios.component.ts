@@ -20,6 +20,7 @@ export class UsuariosComponent implements OnInit{
   usuario: any = null;
   nombreUsuarioExiste = false;
   correoExiste = false;
+  telfInvalido = false;
   constructor(private fb: FormBuilder, private authService: AuthService) {
   }
   ngOnInit(): void {
@@ -34,7 +35,10 @@ export class UsuariosComponent implements OnInit{
       this.usuarioForm = this.fb.group({
         nomUsuario: [this.usuario.nomUsuario],
         correo: [this.usuario.correo],
-        telefono: [this.usuario.trabajador ? this.usuario.trabajador.telefono : this.usuario.empresa?.telefono, Validators.required],
+        telefono: [
+          this.usuario.trabajador ? this.usuario.trabajador.telefono : this.usuario.empresa?.telefono,
+          [Validators.required, Validators.pattern(/^[0-9]{9}$/)]
+        ],
         // Campos adicionales de Trabajador
         nombreTrabajador: [this.usuario.trabajador?.nombre || '', [Validators.pattern(/^[a-zA-Z\s]+$/)]],
         apellidosTrabajador: [this.usuario.trabajador?.apellidos || '', [Validators.pattern(/^[a-zA-Z\s]+$/)]],
@@ -44,6 +48,10 @@ export class UsuariosComponent implements OnInit{
         descripcionEmpresa: [this.usuario.empresa?.descripcion || ''],
       });
 
+      // Escucha cambios en el campo teléfono
+      this.usuarioForm.get('telefono')?.valueChanges.subscribe(value => {
+        this.telfInvalido = !/^[0-9]{9}$/.test(value);
+      });
       this.usuarioForm.get('nomUsuario')?.valueChanges.subscribe(value => this.verificarNombreUsuario(value));
       this.usuarioForm.get('correo')?.valueChanges.subscribe(value => this.verificarCorreo(value));
     }
@@ -93,10 +101,13 @@ export class UsuariosComponent implements OnInit{
         telefono: this.usuarioForm.value.telefono,
       };
     }
-
-    this.authService.updateUsuario(this.usuario.id, datosActualizados).subscribe({
+    //JSON STRING para OBJ -> STRING
+    //JSON PARSE para STRING -> OBJ
+    this.authService.updateUsuario(this.usuario.idUsuario, datosActualizados).subscribe({
       next: (usuarioActualizado) => {
         Swal.fire('Éxito', 'Tus datos han sido actualizados.', 'success');
+        //console.log("VALORES CAMBIADOS: "+JSON.stringify(datosActualizados));
+        //console.log("NUEVO USUARIO: "+JSON.stringify(usuarioActualizado));
         this.authService.setUsuario(usuarioActualizado); // Actualiza localStorage y BehaviorSubject
       },
       error: () => Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error')

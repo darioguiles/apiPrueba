@@ -10,10 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class AnuncioEmpresaService {
@@ -24,6 +22,35 @@ public class AnuncioEmpresaService {
         this.anuncioEmpresaRepository=anuncioEmpresaRepository;
     }
 
+    public List<Map<String, Object>> allF(){
+        List<AnuncioEmpresa> anuncios = this.anuncioEmpresaRepository.findAllWithEmpresa();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date subida = new Date(); // Creamos la hora a la que se publica el anuncio
+
+        return anuncios.stream().map(anuncio -> {
+            Map<String, Object> anuncioMap = new HashMap<>();
+            anuncioMap.put("idAnuncioEmpresa", anuncio.getIdAnuncioEmpresa());
+            anuncioMap.put("descripcion", anuncio.getDescripcion());
+            anuncioMap.put("cantidadPuestos", anuncio.getCantidadPuestos());
+            anuncioMap.put("numAdscritos", anuncio.getNumAdscritos());
+            anuncioMap.put("fechaInicio", anuncio.getFechaInicio() != null ? dateFormat.format(anuncio.getFechaInicio()) : "Indefinida");
+            anuncioMap.put("fechaFin", anuncio.getFechaFin() != null ? dateFormat.format(anuncio.getFechaFin()) : "Indefinida");
+
+            if (anuncio.getEmpresa() != null) {
+                Map<String, Object> empresaMap = new HashMap<>();
+                empresaMap.put("id_empresa", anuncio.getEmpresa().getId_empresa());
+                empresaMap.put("nombre", anuncio.getEmpresa().getNombre());
+                empresaMap.put("descripcion", anuncio.getEmpresa().getDescripcion());
+                empresaMap.put("telefono", anuncio.getEmpresa().getTelefono());
+
+                anuncioMap.put("empresa", empresaMap);
+            }
+
+            return anuncioMap;
+        }).toList();
+    }
+
     public List<AnuncioEmpresa> all(){
         return this.anuncioEmpresaRepository.findAll();
     }
@@ -31,14 +58,30 @@ public class AnuncioEmpresaService {
     public Map<String, Object> findAll(int pagina, int tamanio) {
 
         //  org.springframework.data.domain public interface Pageable  Maven: org.springframework.data
-
         Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioEmpresa" ).ascending());
         //Interfaces
-        Page<AnuncioEmpresa> pageAll = this.anuncioEmpresaRepository.findAll(paginado);
+        Page<AnuncioEmpresa> pageAll = this.anuncioEmpresaRepository.findAllWithEmpresa(paginado);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<Map<String, Object>> anunciosConEmpresa = pageAll.getContent().stream().map(anuncio -> {
+            Map<String, Object> anuncioMap = new HashMap<>();
+            anuncioMap.put("idAnuncioEmpresa", anuncio.getIdAnuncioEmpresa());
+            anuncioMap.put("descripcion", anuncio.getDescripcion());
+            anuncioMap.put("fechaInicio", dateFormat.format(anuncio.getFechaInicio()));
+            anuncioMap.put("fechaFin", anuncio.getFechaFin()!=null ? dateFormat.format(anuncio.getFechaFin()) : null);
+
+            if (anuncio.getEmpresa() != null) {
+                Map<String, Object> empresaMap = new HashMap<>();
+                empresaMap.put("id_empresa", anuncio.getEmpresa().getId_empresa());
+                empresaMap.put("nombre", anuncio.getEmpresa().getNombre());
+                empresaMap.put("telefono", anuncio.getEmpresa().getTelefono());
+                anuncioMap.put("empresa", empresaMap);
+            }
+            return anuncioMap;
+        }).toList();
+        
         Map<String,Object> response = new HashMap<>();
-
-        response.put("anuncioEmpresa", pageAll.getContent());
+        response.put("anuncioEmpresa", anunciosConEmpresa);
         response.put("currentPage", pageAll.getNumber());
         response.put("totalItems", pageAll.getTotalElements());
         response.put("totalPages", pageAll.getTotalPages());

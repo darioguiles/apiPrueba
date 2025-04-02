@@ -29,11 +29,11 @@ public class AnuncioEmpresa {
 
     //Nullable
     private int numAdscritos;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
     private Date fechaInicio;
 
     //Nullable
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
     private Date fechaFin;
 
     @ManyToOne

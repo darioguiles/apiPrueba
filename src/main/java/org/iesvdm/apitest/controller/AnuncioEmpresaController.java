@@ -43,7 +43,7 @@ public class AnuncioEmpresaController {
 
         return this.anuncioEmpresaService.allByQueryFiltersStream(buscarOpc, ordenarOpt);
     }
-    @GetMapping(value = {"","/"})
+    @GetMapping(value = {"","/"}, params = {"!ultimoId"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
             , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
         log.info("Accediendo a todas las anuncioEmpresa con paginacion");
@@ -52,6 +52,8 @@ public class AnuncioEmpresaController {
 
         return ResponseEntity.ok(responseAll);
     }
+
+
     @PostMapping({"","/"})
     public AnuncioEmpresa newTrabajador(@RequestBody AnuncioEmpresa anuncioEmpresa) {
         return this.anuncioEmpresaService.save(anuncioEmpresa);
