@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.service;
 
+import org.iesvdm.apitest.domain.AnuncioEmpresa;
 import org.iesvdm.apitest.domain.AnuncioTrabajador;
 import org.iesvdm.apitest.exception.AnuncioTrabajadorNotFoundException;
 import org.iesvdm.apitest.repository.AnuncioTrabajadorRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -27,14 +29,27 @@ public class AnuncioTrabajadorService {
     public List<Map<String, Object>> allF() {
         List<AnuncioTrabajador> anuncios = this.anuncioTrabajadorRepository.findAllWithTrabajador();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date subida = new Date(); // Creamos la hora a la que se publica el anuncio
+        return getMaps(anuncios);
+    }
 
+    public List<Map<String, Object>> allId(Long id) {
+        List<AnuncioTrabajador> anuncios = this.anuncioTrabajadorRepository.findAllByTrabajadorIdtrabajador(id);
+
+        return getMaps(anuncios);
+    }
+
+    public List<Map<String, Object>> allFiltered(String descripcion, String nombre) {
+        List<AnuncioTrabajador> anuncios = this.anuncioTrabajadorRepository.findAnuncioTod(descripcion,nombre);
+
+        return getMaps(anuncios);
+    }
+
+    private List<Map<String, Object>> getMaps(List<AnuncioTrabajador> anuncios) {
         return anuncios.stream().map(anuncio -> {
             Map<String, Object> anuncioMap = new HashMap<>();
             anuncioMap.put("idAnuncioTrabajador", anuncio.getIdAnuncioTrabajador());
             anuncioMap.put("descripcion", anuncio.getDescripcion());
-            anuncioMap.put("fechaPublicacion", dateFormat.format(subida));
+            anuncioMap.put("fechaPublicacion", anuncio.getFechaPublicacion());
 
             if (anuncio.getTrabajador() != null) {
                 Map<String, Object> trabajadorMap = new HashMap<>();
@@ -49,6 +64,38 @@ public class AnuncioTrabajadorService {
             return anuncioMap;
         }).toList();
     }
+
+    public Map<String, Object> buscarAnunciosFiltrados(String descripcion, String nombre,  Pageable pageable) {
+        Page<AnuncioTrabajador> pageAnuncios = anuncioTrabajadorRepository.findBecauseFilter(descripcion, nombre,  pageable);
+
+        List<Map<String, Object>> anuncioT = pageAnuncios.getContent().stream().map(anuncio -> {
+            Map<String, Object> anuncioMap = new HashMap<>();
+            anuncioMap.put("idAnuncioTrabajador", anuncio.getIdAnuncioTrabajador());
+            anuncioMap.put("descripcion", anuncio.getDescripcion());
+            anuncioMap.put("fechaPublicacion", anuncio.getFechaPublicacion());
+
+            if (anuncio.getTrabajador() != null) {
+                Map<String, Object> trabajadorMap = new HashMap<>();
+                trabajadorMap.put("id_trabajador", anuncio.getTrabajador().getId_trabajador());
+                trabajadorMap.put("nombre", anuncio.getTrabajador().getNombre());
+                trabajadorMap.put("apellidos", anuncio.getTrabajador().getApellidos());
+                trabajadorMap.put("telefono", anuncio.getTrabajador().getTelefono());
+
+                anuncioMap.put("trabajador", trabajadorMap);
+            }
+            return anuncioMap;
+        }).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("anuncioTrabajadores", anuncioT);
+        response.put("currentPage", pageAnuncios.getNumber());
+        response.put("totalItems", pageAnuncios.getTotalElements());
+        response.put("totalPages", pageAnuncios.getTotalPages());
+
+        return response;
+    }
+
+
 
     public Map<String, Object> findAll(int pagina, int tamanio) {
 
@@ -89,6 +136,7 @@ public class AnuncioTrabajadorService {
     }
 
     public AnuncioTrabajador save(AnuncioTrabajador anuncioTrabajador) {
+        anuncioTrabajador.setFechaPublicacion(LocalDateTime.now());
         return this.anuncioTrabajadorRepository.save(anuncioTrabajador);
     }
 

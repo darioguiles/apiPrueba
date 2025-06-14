@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,8 +25,9 @@ public class AnuncioTrabajador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long idAnuncioTrabajador;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
-    private Date fechaPublicacion;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Spain")
+    private LocalDateTime fechaPublicacion;
     private String descripcion;
 
     @ManyToOne
@@ -38,6 +40,5 @@ public class AnuncioTrabajador {
 
     public AnuncioTrabajador(String descripcion) {
         this.descripcion = descripcion;
-        this.fechaPublicacion = new Date();
     }
 }

@@ -2,6 +2,7 @@ package org.iesvdm.apitest.service;
 
 
 import org.iesvdm.apitest.domain.AnuncioEmpresa;
+import org.iesvdm.apitest.domain.AnuncioTrabajador;
 import org.iesvdm.apitest.exception.AnuncioEmpresaNotFoundException;
 import org.iesvdm.apitest.repository.AnuncioEmpresaRepository;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -22,20 +23,28 @@ public class AnuncioEmpresaService {
         this.anuncioEmpresaRepository=anuncioEmpresaRepository;
     }
 
+    public List<Map<String, Object>> allFiltered(String descripcion, String nombre) {
+        List<AnuncioEmpresa> anuncios = this.anuncioEmpresaRepository.findAnuncioTod(descripcion,nombre);
+
+        return getMaps(anuncios);
+    }
+
     public List<Map<String, Object>> allF(){
         List<AnuncioEmpresa> anuncios = this.anuncioEmpresaRepository.findAllWithEmpresa();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date subida = new Date(); // Creamos la hora a la que se publica el anuncio
 
+        return getMaps(anuncios);
+    }
+
+    private List<Map<String, Object>> getMaps(List<AnuncioEmpresa> anuncios) {
         return anuncios.stream().map(anuncio -> {
             Map<String, Object> anuncioMap = new HashMap<>();
             anuncioMap.put("idAnuncioEmpresa", anuncio.getIdAnuncioEmpresa());
             anuncioMap.put("descripcion", anuncio.getDescripcion());
             anuncioMap.put("cantidadPuestos", anuncio.getCantidadPuestos());
             anuncioMap.put("numAdscritos", anuncio.getNumAdscritos());
-            anuncioMap.put("fechaInicio", anuncio.getFechaInicio() != null ? dateFormat.format(anuncio.getFechaInicio()) : "Indefinida");
-            anuncioMap.put("fechaFin", anuncio.getFechaFin() != null ? dateFormat.format(anuncio.getFechaFin()) : "Indefinida");
+            anuncioMap.put("fechaInicio", anuncio.getFechaInicio() != null ? anuncio.getFechaInicio() : "Indefinida");
+            anuncioMap.put("fechaFin", anuncio.getFechaFin() != null ? anuncio.getFechaFin() : "Indefinida");
 
             if (anuncio.getEmpresa() != null) {
                 Map<String, Object> empresaMap = new HashMap<>();
@@ -51,6 +60,12 @@ public class AnuncioEmpresaService {
         }).toList();
     }
 
+    public List<Map<String, Object>> allId(Long id){
+        List<AnuncioEmpresa> anuncios = this.anuncioEmpresaRepository.findAllByEmpresaIdEmpresa(id);
+
+        return getMaps(anuncios);
+    }
+
     public List<AnuncioEmpresa> all(){
         return this.anuncioEmpresaRepository.findAll();
     }
@@ -62,13 +77,12 @@ public class AnuncioEmpresaService {
         //Interfaces
         Page<AnuncioEmpresa> pageAll = this.anuncioEmpresaRepository.findAllWithEmpresa(paginado);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         List<Map<String, Object>> anunciosConEmpresa = pageAll.getContent().stream().map(anuncio -> {
             Map<String, Object> anuncioMap = new HashMap<>();
             anuncioMap.put("idAnuncioEmpresa", anuncio.getIdAnuncioEmpresa());
             anuncioMap.put("descripcion", anuncio.getDescripcion());
-            anuncioMap.put("fechaInicio", dateFormat.format(anuncio.getFechaInicio()));
-            anuncioMap.put("fechaFin", anuncio.getFechaFin()!=null ? dateFormat.format(anuncio.getFechaFin()) : null);
+            anuncioMap.put("fechaInicio", anuncio.getFechaInicio());
+            anuncioMap.put("fechaFin", anuncio.getFechaFin()!=null ? anuncio.getFechaFin() : null);
 
             if (anuncio.getEmpresa() != null) {
                 Map<String, Object> empresaMap = new HashMap<>();
@@ -88,6 +102,36 @@ public class AnuncioEmpresaService {
 
         return response;
 
+    }
+
+    public Map<String, Object> buscarAnunciosFiltrados(String descripcion, String nombre,  Pageable pageable) {
+        Page<AnuncioEmpresa> pageAnuncios = anuncioEmpresaRepository.findBecauseFilter(descripcion, nombre,  pageable);
+
+        List<Map<String, Object>> anunciosConEmpresa = pageAnuncios.getContent().stream().map(anuncio -> {
+            Map<String, Object> anuncioMap = new HashMap<>();
+            anuncioMap.put("idAnuncioEmpresa", anuncio.getIdAnuncioEmpresa());
+            anuncioMap.put("descripcion", anuncio.getDescripcion());
+            anuncioMap.put("fechaInicio", anuncio.getFechaInicio());
+            anuncioMap.put("fechaFin", anuncio.getFechaFin());
+
+            if (anuncio.getEmpresa() != null) {
+                Map<String, Object> empresaMap = new HashMap<>();
+                empresaMap.put("id_empresa", anuncio.getEmpresa().getId_empresa());
+                empresaMap.put("nombre", anuncio.getEmpresa().getNombre());
+                empresaMap.put("telefono", anuncio.getEmpresa().getTelefono());
+                anuncioMap.put("empresa", empresaMap);
+            }
+
+            return anuncioMap;
+        }).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("anuncioEmpresa", anunciosConEmpresa);
+        response.put("currentPage", pageAnuncios.getNumber());
+        response.put("totalItems", pageAnuncios.getTotalElements());
+        response.put("totalPages", pageAnuncios.getTotalPages());
+
+        return response;
     }
 
 

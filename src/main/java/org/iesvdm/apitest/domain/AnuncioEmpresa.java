@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,12 +30,13 @@ public class AnuncioEmpresa {
 
     //Nullable
     private int numAdscritos;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
-    private Date fechaInicio;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Spain")
+    private LocalDateTime fechaInicio;
 
     //Nullable
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Europe/Spain")
-    private Date fechaFin;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Spain")
+    private LocalDateTime fechaFin;
 
     @ManyToOne
     @JsonBackReference
@@ -44,16 +46,16 @@ public class AnuncioEmpresa {
     @JsonIgnore
     private Set<Trabajador> trabajadoresInteresados = new HashSet<>();
 
-    public AnuncioEmpresa(String descripcion, int cantidadPuestos, Date fechaFin) {
+    public AnuncioEmpresa(String descripcion, int cantidadPuestos, LocalDateTime fechaInicio,LocalDateTime fechaFin) {
         this.descripcion = descripcion;
         this.cantidadPuestos = cantidadPuestos;
-        this.fechaInicio = new Date();
+        this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
 
-    public AnuncioEmpresa(String descripcion, int cantidadPuestos) {
+    public AnuncioEmpresa(String descripcion, int cantidadPuestos, LocalDateTime fechaInicio) {
         this.descripcion = descripcion;
         this.cantidadPuestos = cantidadPuestos;
-        this.fechaInicio = new Date();
+        this.fechaInicio = fechaInicio;
     }
 }

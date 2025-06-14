@@ -118,7 +118,7 @@ public class UsuarioController {
         this.usuarioService.delete(id);
     }
     @PostMapping("/login")
-    public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<UsuarioDto> login(@RequestBody LoginRequest loginRequest) {
 
         //Valida que el usuario/correo utilizado existe y que la contraseña sea la misma que en BD
         Usuario usuario = usuarioService.validarCredenciales(loginRequest.getNomUsuarioCorreo(), loginRequest.getPassword());
@@ -127,7 +127,31 @@ public class UsuarioController {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        return ResponseEntity.ok(usuario); // Devuelve el objeto Usuario completo
+
+
+        Optional<Empresa> empresaOptional = empresaRepository.findById(usuario.getIdUsuario());
+        Optional<Trabajador> trabajadorOptional = trabajadorRepository.findById(usuario.getIdUsuario());
+
+        Empresa empresa = null;
+        Trabajador trabajador = null;
+
+        if (empresaOptional.isPresent())
+        {
+            empresa = empresaOptional.get();
+        }
+        else {
+            trabajador = trabajadorOptional.get();
+        }
+
+        UsuarioDto dto = new UsuarioDto();
+        dto.setId(usuario.getIdUsuario());
+        dto.setNombreUsuario(usuario.getNomUsuario());
+        dto.setCorreo(usuario.getCorreo());
+        dto.setEsAdmin(usuario.isEsAdmin());
+        dto.setEmpresa(empresa);
+        dto.setTrabajador(trabajador);
+
+        return ResponseEntity.ok(dto); // Devuelve el objeto Usuario completo
 
     }
 

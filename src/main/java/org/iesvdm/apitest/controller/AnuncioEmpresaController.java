@@ -4,10 +4,18 @@ package org.iesvdm.apitest.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.AnuncioEmpresa;
 import org.iesvdm.apitest.service.AnuncioEmpresaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +42,20 @@ public class AnuncioEmpresaController {
 
     }
 
+    @GetMapping(value = {"","/"})
+    public ResponseEntity<Map<String, Object>> getAnunciosEmpresaFiltrados(
+            @RequestParam(required = false, value = "descripcion") String descripcion,
+            @RequestParam(required = false, value = "nombre") String nombre,
+            @RequestParam( value = "pagina", defaultValue = "0") int pagina
+            , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio
+    ) {
+        Pageable pageable = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioEmpresa" ).ascending());
+
+        Map<String, Object> response = anuncioEmpresaService.buscarAnunciosFiltrados(descripcion, nombre, pageable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<AnuncioEmpresa> all(@RequestParam("buscar") Optional<String> buscarOpc
             , @RequestParam("ordenar") Optional<String> ordenarOpt) {
@@ -43,7 +65,7 @@ public class AnuncioEmpresaController {
 
         return this.anuncioEmpresaService.allByQueryFiltersStream(buscarOpc, ordenarOpt);
     }
-    @GetMapping(value = {"","/"}, params = {"!ultimoId"})
+    @GetMapping(value = {"","/"}, params = {"!ultimoId", "!buscar", "!ordenar", "!fecha", "!nombre","!descripcion"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
             , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
         log.info("Accediendo a todas las anuncioEmpresa con paginacion");
@@ -69,7 +91,7 @@ public class AnuncioEmpresaController {
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteTrabajador(@PathVariable("id") Long id) {
+    public void deleteAnuncio(@PathVariable("id") Long id) {
         this.anuncioEmpresaService.delete(id);
     }
 

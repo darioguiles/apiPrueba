@@ -18,6 +18,12 @@ export class AuthService {
     }
   }
 
+  getTodosAnunciosUser(id: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/anuncios/todos/${id}`, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
 
   //Funciona!! Es un Login el cual te permite loguearte segun tu nomUsuario o Correo.
   login(userOrCorreo: string, contrasenia: string): Observable<any> {

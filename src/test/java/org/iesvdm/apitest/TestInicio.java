@@ -1,5 +1,6 @@
 package org.iesvdm.apitest;
 
+import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
 import org.iesvdm.apitest.domain.*;
 import org.iesvdm.apitest.repository.*;
 import org.iesvdm.apitest.service.AnuncioTrabajadorService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @SpringBootTest
@@ -103,7 +105,7 @@ public class TestInicio {
         assert trabajador != null;
 
         // Crear un anuncio para el trabajador
-        AnuncioTrabajador anuncio = new AnuncioTrabajador(0, new Date(), "Esto es un anuncio de un Trabajador", trabajador, null);
+        AnuncioTrabajador anuncio = new AnuncioTrabajador(0, LocalDateTime.now(), "Esto es un anuncio de un Trabajador", trabajador, null);
         anuncioTrabajadorRepository.save(anuncio);
 
         // Verificar que el anuncio se creó y está asociado al trabajador

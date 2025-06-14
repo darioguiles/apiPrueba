@@ -96,7 +96,6 @@ public class UsuarioService {
             return usuario; // Credenciales correctas
         }
 
-
         return null; // Si no se encuentran coincidencias
     }
 

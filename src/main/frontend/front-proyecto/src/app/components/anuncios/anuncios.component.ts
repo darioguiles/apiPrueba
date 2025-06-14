@@ -1,9 +1,10 @@
-import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges,ChangeDetectorRef } from '@angular/core';
 import {AnuncioService} from "../../services/anuncio.service";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {ContenidoComponent} from "../../contenido/contenido.component";
 import Swal from "sweetalert2";
+import {HttpParams} from "@angular/common/http";
 @Component({
   selector: 'app-anuncios',
   standalone: true,
@@ -11,15 +12,19 @@ import Swal from "sweetalert2";
     MatPaginator,
     NgForOf,
     NgIf,
-    NgClass
+    NgClass,
+    DatePipe
   ],
   templateUrl: './anuncios.component.html',
   styleUrl: './anuncios.component.scss',
   providers:[AnuncioService]
 })
+
 export class AnunciosComponent implements OnInit, OnChanges{
   @Input() filtroSeleccionado: string = 'todos'; // Recibimos el filtro desde el padre
   @Input() usuario: any = null; // Usuario autenticado
+  @Input() filtros: any = null;
+  @Input() trigger: number= 0;
 
   anuncios: any[] = [];
   anunciosMostrados: any[] = [];
@@ -29,8 +34,15 @@ export class AnunciosComponent implements OnInit, OnChanges{
   currentPage: number = 0;
   esNuevo : boolean = false;
   cantidadInicial = 5;      // Cuántos anuncios mostramos primero
-  incremento = 5;           // Cuántos se añaden al hacer "Ver más"
-  constructor(private anuncioService: AnuncioService) {}
+  cantidadMostrada = 5;
+
+  verMas(): void {
+    this.cantidadMostrada += 5;
+    this.anunciosMostrados = this.anuncios.slice(0, this.cantidadMostrada);
+  }
+  constructor(private anuncioService: AnuncioService, private cdr: ChangeDetectorRef) {}
+
+
 
   ngOnInit(): void {
     this.loadAnuncios();
@@ -43,6 +55,105 @@ export class AnunciosComponent implements OnInit, OnChanges{
       this.anunciosMostrados = []; // Limpiar lista al cambiar filtro
       this.loadAnuncios();
     }
+    if (changes['trigger'] && !changes['trigger'].firstChange)
+    {
+      this.currentPage = 0;
+      this.anuncios = []; // Limpiar lista al cambiar filtro
+      this.anunciosMostrados = []; // Limpiar lista al cambiar filtro
+      this.loadAnunciosConFiltros();
+    }
+  }
+  loadAnunciosConFiltros(): void {
+    switch (this.filtroSeleccionado) {
+      case 'empresa':
+        this.loadAnunciosEmpresaF();
+        break;
+      case 'trabajador':
+        this.loadAnunciosTrabajadorF();
+        break;
+      default:
+        this.loadAnunciosTodosF();
+        break;
+    }
+  }
+
+  loadAnunciosEmpresaF(): void {
+    let params = new HttpParams()
+      .set('pagina', this.currentPage.toString())
+      .set('tamanio', this.pageSize.toString());
+
+    if (this.filtros) {
+      Object.entries(this.filtros).forEach(([clave, valor]) => {
+        if (valor !== null && valor !== undefined && valor !== '') {
+          params = params.set(clave, String(valor));
+        }
+      });
+    }
+
+    this.anuncioService.getAnunciosEmpresasF(params).subscribe({
+      next: (data) => {
+        this.anunciosMostrados = data.anuncioEmpresa || [];
+        this.totalAnuncios = data.totalItems || 0;
+      },
+      error: (error) => {
+        console.error('Error cargando anuncios filtrados:', error);
+      }
+    });
+
+  }
+
+  loadAnunciosTrabajadorF(): void {
+    let params = new HttpParams()
+      .set('pagina', this.currentPage.toString())
+      .set('tamanio', this.pageSize.toString());
+
+    if (this.filtros) {
+      Object.entries(this.filtros).forEach(([clave, valor]) => {
+        if (valor !== null && valor !== undefined && valor !== '') {
+          params = params.set(clave, String(valor));
+        }
+      });
+    }
+
+    this.anuncioService.getAnunciosTrabajadoresF(params).subscribe({
+      next: (data) => {
+        this.anunciosMostrados = data.anuncioTrabajadores || [];
+        this.totalAnuncios = data.totalItems || 0;
+      },
+      error: (error) => {
+        console.error('Error cargando anuncios filtrados:', error);
+      }
+    });
+
+  }
+
+  loadAnunciosTodosF(): void {
+    let params = new HttpParams();
+
+    if (this.filtros) {
+      Object.entries(this.filtros).forEach(([clave, valor]) => {
+        if (valor !== null && valor !== undefined && valor !== '') {
+          params = params.set(clave, String(valor));
+        }
+      });
+    }
+
+    this.anuncioService.getTodosLosAnunciosF(params).subscribe({
+      next: (data) => {
+        const empresaAnuncios = data.anuncioEmpresa || [];
+        const trabajadorAnuncios = data.anuncioTrabajador || [];
+
+        // Mezclamos todos los anuncios y los ordenamos por ID
+        this.anuncios = [...empresaAnuncios, ...trabajadorAnuncios]
+          .sort((a, b) => b.id - a.id);
+
+        this.anunciosMostrados = this.anuncios.slice(0, this.cantidadInicial);
+        //console.log("Anuncios: "+ JSON.stringify(this.anunciosMostrados));
+      },
+      error: (error) => console.error('Error al cargar anuncios:', error)
+    });
+
+
   }
 
   mostrarBotonArriba: boolean = false;
@@ -107,12 +218,6 @@ export class AnunciosComponent implements OnInit, OnChanges{
     });
   }
 
-  verMas(): void {
-    console.log("Se ha pulsado Ver más")
-    const siguienteCantidad = this.anunciosMostrados.length + this.incremento;
-    this.anunciosMostrados = this.anuncios.slice(0, siguienteCantidad);
-    console.log("Estos son los anuncios Mostrados:"+JSON.stringify(this.anunciosMostrados))
-  }
 
   onPageChange(event: PageEvent) {
     console.log(` Página seleccionada: ${event.pageIndex}, Tamaño: ${event.pageSize}`);
@@ -126,28 +231,20 @@ export class AnunciosComponent implements OnInit, OnChanges{
   esPropietario(anuncio: any): boolean {
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-    if (!usuario.idUsuario) return false; // Si no hay usuario logueado, no permitir editar
+    if (!usuario.id) return false; // Si no hay usuario logueado, no permitir editar
 
     if (anuncio.trabajador && usuario.trabajador) {
       return anuncio.trabajador.id_trabajador === usuario.trabajador.id_trabajador;
     }
 
     if (anuncio.empresa && usuario.empresa) {
-      return anuncio.empresa.idEmpresa === usuario.empresa.idEmpresa;
+      return anuncio.empresa.id_empresa === usuario.empresa.id_empresa;
     }
 
     return false;
   }
 
-  obtenerFechaActualUTCmas1(): string {
-    const fechaActual = new Date();
 
-    // Convertir a UTC+1 (España)
-    fechaActual.setHours(fechaActual.getHours() + 1);
-
-    // Formatear en "yyyy-MM-dd"
-    return fechaActual.toISOString().split("T")[0];
-  }
   crearAnuncio(): void {
     const usuarioData = localStorage.getItem("usuario");
 
@@ -212,27 +309,31 @@ export class AnunciosComponent implements OnInit, OnChanges{
       confirmButtonText: 'Crear',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
-        const descripcion = (document.getElementById('descripcion') as HTMLInputElement)?.value;
-        if (usuario.empresa) {
-          const fechaInicio = usuario.empresa ? (document.getElementById('fechaInicio') as HTMLInputElement)?.value : null;
-          let fechaFin = this.usuario.empresa ? (document.getElementById('fechaFin') as HTMLInputElement)?.value : null;
+        const descripcionInput = document.getElementById('descripcion') as HTMLInputElement | null;
+        const descripcion = descripcionInput?.value?.trim();
+
+        if (!descripcion) {
+          Swal.showValidationMessage('La descripción es obligatoria.');
+          return false;
+        }
+
+        if (usuario?.empresa) {
+          const fechaInicioInput = document.getElementById('fechaInicio') as HTMLInputElement | null;
+          const fechaFinInput = document.getElementById('fechaFin') as HTMLInputElement | null;
+
+          const fechaInicio = fechaInicioInput?.value || null;
+          const fechaFin = fechaFinInput?.value || null;
 
           if (usuario.empresa && !fechaInicio) {
             Swal.showValidationMessage('La fecha de inicio es obligatoria.');
             return false;
           }
-          // Si no se introduce fecha de fin, se deja como `null`
-          fechaFin = fechaFin || null;
 
           if (!descripcion) {
             Swal.showValidationMessage('La descripción es obligatoria.');
             return false;
           }
-          return { descripcion, fechaInicio, fechaFin };
-        }
-        if (!descripcion) {
-          Swal.showValidationMessage('La descripción es obligatoria.');
-          return false;
+          return {descripcion, fechaInicio, fechaFin};
         }
 
         return {descripcion};
@@ -247,7 +348,7 @@ export class AnunciosComponent implements OnInit, OnChanges{
         };
 
         if (usuario.trabajador) {
-          nuevoAnuncio.fecha_publicacion = this.obtenerFechaActualUTCmas1();
+          //nuevoAnuncio.fecha_publicacion = this.obtenerFechaActualUTCmas1();
           nuevoAnuncio.trabajador = { id_trabajador: usuario.trabajador.id_trabajador };
         } else if (usuario.empresa) {
           nuevoAnuncio.empresa = { id_empresa: usuario.empresa.id_empresa };
@@ -257,13 +358,9 @@ export class AnunciosComponent implements OnInit, OnChanges{
 
         this.anuncioService.crearAnuncio(nuevoAnuncio).subscribe({
           next: () => {
-
             Swal.fire('Éxito', 'El anuncio se ha creado correctamente.', 'success');
-            this.esNuevo= true;
-            this.anunciosMostrados.unshift(nuevoAnuncio)
-            setTimeout(() => {
-              nuevoAnuncio.esNuevo = false;
-            }, 5000);
+            this.loadAnuncios();
+
           },
           error: () => {
             Swal.fire('Error', 'Hubo un problema al crear el anuncio.', 'error');

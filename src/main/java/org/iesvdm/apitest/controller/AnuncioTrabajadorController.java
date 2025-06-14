@@ -3,6 +3,9 @@ package org.iesvdm.apitest.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.iesvdm.apitest.domain.AnuncioTrabajador;
 import org.iesvdm.apitest.service.AnuncioTrabajadorService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +35,20 @@ public class AnuncioTrabajadorController {
 
     }
 
-    @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio"}) // <- Hace falta bloquear la paginación por esta ruta
+    @GetMapping(value = {"","/"})
+    public ResponseEntity<Map<String, Object>> getAnunciosEmpresaFiltrados(
+            @RequestParam(required = false, value = "descripcion") String descripcion,
+            @RequestParam(required = false, value = "nombre") String nombre,
+            @RequestParam( value = "pagina", defaultValue = "0") int pagina
+            , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio
+    ) {
+        Pageable pageable = PageRequest.of(pagina, tamanio, Sort.by("idAnuncioTrabajador" ).ascending());
+
+        Map<String, Object> response = anuncioTrabajadorService.buscarAnunciosFiltrados(descripcion, nombre, pageable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"","/"}, params = {"!pagina", "!tamanio", "!descripcion","!nombre"}) // <- Hace falta bloquear la paginación por esta ruta
     public List<AnuncioTrabajador> all(@RequestParam("buscar") Optional<String> buscarOpc
             , @RequestParam("ordenar") Optional<String> ordenarOpt) {
         log.info("Accediendo a todas los trabajadores con filtro buscar: %s y ordenar");
@@ -41,7 +57,7 @@ public class AnuncioTrabajadorController {
 
         return this.anuncioTrabajadorService.allByQueryFiltersStream(buscarOpc, ordenarOpt);
     }
-    @GetMapping(value = {"","/"}, params = {"!ultimoId"})
+    @GetMapping(value = {"","/"}, params = {"!ultimoId", "!descripcion","!nombre"})
     public ResponseEntity<Map<String,Object>> all(@RequestParam( value = "pagina", defaultValue = "0") int pagina
             , @RequestParam(value = "tamanio" , defaultValue = "5") int tamanio) {
         log.info("Accediendo a todos los anunciosTrabajador con paginacion");
@@ -50,9 +66,6 @@ public class AnuncioTrabajadorController {
 
         return ResponseEntity.ok(responseAll);
     }
-
-
-
 
     @PostMapping({"","/"})
     public AnuncioTrabajador newTrabajador(@RequestBody AnuncioTrabajador anuncioTrabajador) {

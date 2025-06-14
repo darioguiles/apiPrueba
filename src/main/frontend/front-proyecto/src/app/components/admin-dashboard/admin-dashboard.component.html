@@ -1,0 +1,103 @@
+<div class="container mt-4">
+
+  <h2 class="text-center mb-4">Panel de Administración</h2>
+
+  <!-- Sección de Usuarios -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4>Usuarios</h4>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Correo</th>
+          <th>Telefono</th>
+          <th>¿Admin?</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.nomUsuario }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.telefono }}</td>
+          <td>{{ usuario.esAdmin ? 'Sí' : 'No' }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="editarUsuario(usuario)">Editar</button>
+            <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.id)">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sección de Anuncios de Empresa -->
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">
+      <h4>Anuncios de Empresa</h4>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Empresa</th>
+          <th>Fecha Inicip</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let anuncio of anunciosEmpresa">
+          <td>{{ anuncio.idAnuncioEmpresa }}</td>
+          <td>{{ anuncio.descripcion }}</td>
+          <td>{{ anuncio.fechaInicio }}</td>
+          <td>{{ anuncio.empresa?.nombre }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="editarAnuncio(anuncio)">Editar</button>
+            <button class="btn btn-sm btn-danger" (click)="confirmarEliminarAnuncio(anuncio.idAnuncioEmpresa)">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sección de Anuncios de Trabajador -->
+  <div class="card">
+    <div class="card-header bg-info text-white">
+      <h4>Anuncios de Trabajador</h4>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Trabajador</th>
+          <th>Fecha Publicado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let anuncio of anunciosTrabajador">
+          <td>{{ anuncio.idAnuncioTrabajador }}</td>
+          <td>{{ anuncio.descripcion }}</td>
+          <td>{{ anuncio.trabajador?.nombre }} {{ anuncio.trabajador?.apellidos }}</td>
+          <td>{{ anuncio.fechaPublicacion }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="editarAnuncio(anuncio)">Editar</button>
+            <button class="btn btn-sm btn-danger" (click)="confirmarEliminarAnuncio(anuncio.idAnuncioTrabajador)">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

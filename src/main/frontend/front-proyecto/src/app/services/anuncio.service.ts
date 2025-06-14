@@ -7,10 +7,28 @@ import { Observable } from 'rxjs';
 })
 export class AnuncioService {
   private apiUrl = 'http://localhost:8080/v1/data-api/anuncio';
-
+  private apiAdm = 'http://localhost:8080/v1/data-api/admin/dashboard'
   constructor(private http: HttpClient) {}
 
-  // Obtener anuncios solo de trabajadores POR DEFECTO
+  getTodosLosAnunciosF(params: HttpParams): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}s/todos/filtrar`,{
+      params
+    });
+  }
+
+  getAnunciosTrabajadoresF(params: HttpParams): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}trabajadores`, {
+      params
+    });
+  }
+
+  getAnunciosEmpresasF(params: HttpParams): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}empresa`, {
+      params
+    });
+  }
+
+
   getAnunciosTrabajadores(pageSize: number, currentPage: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}trabajadores`, {
       params: new HttpParams()
@@ -103,4 +121,17 @@ export class AnuncioService {
     });
 
   }
+
+  getAllUsuarios():Observable<any>{
+    return this.http.get<any>(`${this.apiAdm}/usuarios`);
+  }
+
+  getAllAnunciosEmpresa():Observable<any>{
+    return this.http.get<any>(`${this.apiAdm}/empresa`);
+  }
+  getAllAnunciosTrabajador():Observable<any>{
+    return this.http.get<any>(`${this.apiAdm}/trabajador`);
+  }
+
+
 }

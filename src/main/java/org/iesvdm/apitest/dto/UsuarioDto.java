@@ -1,5 +1,6 @@
 package org.iesvdm.apitest.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ import org.iesvdm.apitest.domain.Usuario;
 public class UsuarioDto {
 
     private Long id;
+    @JsonProperty("nomUsuario")
     private String nombreUsuario;
     private String correo;
 

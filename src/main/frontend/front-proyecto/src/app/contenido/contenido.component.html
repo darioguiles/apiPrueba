@@ -11,29 +11,60 @@
 <div class="container-xl">
 
   <div class="section d-lg-flex justify-content-between">
+    <div class="border border-grey d-flex flex-column align-items-center p-4" id="filtrado" style="max-height: fit-content; overflow-y: auto;">
+      <h3 class="text-center mb-4">Filtros</h3>
 
+      <!-- Único formulario centrado -->
+      <form (ngSubmit)="aplicarFiltros()" class="d-flex flex-column align-items-center w-100">
 
-    <!-- Filtros -->
-    <div class="border border-grey d-flex flex-column align-items-center" id="filtrado" style="max-height: 130px; overflow-y: auto;">
-      <h2>Filtros</h2>
-      <form>
-        <div class="d-flex flex-column align-items-center">
-          <label for="filtroAnuncios" class="mb-2">Mostrar:</label>
-          <select id="filtroAnuncios" class="form-select border-dark rounded" name="filtroAnuncios"
-                  [(ngModel)]="filtroSeleccionado" (change)="onFiltroChange()">
-            <option value="todos" selected>Todos</option>
+        <div class="mb-3 w-100 d-flex flex-column align-items-center">
+          <label for="filtroAnuncios" class="form-label">Mostrar:</label>
+          <select id="filtroAnuncios" class="form-select border-dark rounded"
+                  name="filtroSeleccionado"
+                  [(ngModel)]="filtroSeleccionado"
+                  [ngModelOptions]="{standalone: true}"
+                  (change)="onFiltroChange()"
+                  style="max-width: 300px; width: 100%;">
+            <option value="todos">Todos</option>
             <option value="empresa">Empresas</option>
             <option value="trabajador">Trabajadores</option>
           </select>
         </div>
+
+        <div class="mb-3 w-100 d-flex flex-column align-items-center">
+          <label for="descAnuncio" class="form-label">Descripción Anuncio:</label>
+          <input id="descAnuncio" type="text" class="form-control"
+                 [(ngModel)]="filtros.descripcion" name="descripcion"
+                 placeholder="Descripción"
+
+                 style="max-width: 300px; width: 100%;" />
+        </div>
+
+        <div class="mb-3 w-100 d-flex flex-column align-items-center">
+          <label for="nomCre" class="form-label">Nombre Creador:</label>
+          <input id="nomCre" type="text" class="form-control"
+                 [(ngModel)]="filtros.nombre" name="nombre"
+                 placeholder="Nombre"
+
+                 style="max-width: 300px; width: 100%;" />
+        </div>
+
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+          <button type="button" (click)="resetFiltros()" class="btn btn-secondary ms-2">Limpiar</button>
+        </div>
+
       </form>
-    </div>
+      </div>
 
 
     <!-- Componente Anuncios -->
     <div id="content" class="d-flex flex-column align-items-center flex-grow-1 mt-md-4">
       <app-anuncios
-        [filtroSeleccionado]="filtroSeleccionado">
+        [filtroSeleccionado]="filtroSeleccionado"
+        [filtros]="filtros"
+        [trigger]="filtroTrigger"
+      >
       </app-anuncios>
     </div>
 
