@@ -1,0 +1,34 @@
+========================================
+   DEPLOY FRONTEND + BACKEND CON DOCKER
+========================================
+
+Requisitos previos (en Ubuntu o Windows):
+
+*** IMPORTANTE JDK 21 ***
+
+------------------------------------------
+1. Tener Docker instalado y funcionando:
+   - Windows: Docker Desktop
+   - Ubuntu: sudo apt install -y docker.io
+
+2. Crear una red para conectar contenedores:
+   docker network create app-net
+
+3. Construir las imágenes Docker:
+   //docker build -t mi-backend -f Dockerfile-backend .
+   docker build -t mi-frontend -f Dockerfile-frontend .
+
+4. Ejecutar los contenedores:
+   //docker run -d --name backend --network app-net -p 8080:8080 mi-backend
+   docker run -d --name frontend --network app-net -p 4200:4200 mi-frontend
+
+5. Acceder a la aplicación:
+   - Frontend (Angular): http://localhost:4200
+   - Backend (Spring Boot): http://localhost:8080
+
+IMPORTANTE para Angular (package.json):
+------------------------------------------
+Asegúrate de tener este script en tu package.json:
+"start": "ng serve --host 0.0.0.0 --port 4200"
+
+¡Todo listo!

@@ -61,8 +61,8 @@
         <tr *ngFor="let anuncio of anunciosEmpresa">
           <td>{{ anuncio.idAnuncioEmpresa }}</td>
           <td>{{ anuncio.descripcion }}</td>
-          <td>{{ anuncio.fechaInicio }}</td>
           <td>{{ anuncio.empresa?.nombre }}</td>
+          <td>{{ anuncio.fechaInicio }}</td>
           <td>{{ anuncio.empresa?.id_empresa }}</td>
           <td>
             <button class="btn btn-sm btn-warning me-2" (click)="editarAnuncio(anuncio)">Editar</button>
