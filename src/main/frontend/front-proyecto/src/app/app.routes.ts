@@ -12,6 +12,6 @@ export const routes: Routes = [
     {path:'content', component: ContenidoComponent},
     {path:'register', component: RegisterComponent},
   {path:'usuario', component: UsuariosComponent},
-  { path: 'admin', component: AdminDashboardComponent },
+  { path: 'admin', component: AdminDashboardComponent},
   {path: '**', pathMatch: 'full', redirectTo: 'landing'}
 ];

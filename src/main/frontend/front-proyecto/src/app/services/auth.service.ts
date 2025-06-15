@@ -72,7 +72,6 @@ export class AuthService {
     this.usuarioSubject.next(null); // Emit null to indicate logout
   }
 
-
   deleteUsuario(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/usuarios/${id}`);
   }

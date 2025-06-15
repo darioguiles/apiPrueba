@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "8606a67c-ee85-47c5-866c-5dfa55c6db53",
+		"name": "ApiProyecto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27769523"
+	},
+	"item": [
+		{
+			"name": "GetUsuarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "GetTrabajadores",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/trabajadores"
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmpresas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/empresas"
+			},
+			"response": []
+		},
+		{
+			"name": "NewUsuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nomUsuario\": \"userAdmindario\",\n    \"correo\": \"d@a.es\",\n    \"contrasenia\": \"prueba\",\n    \"esAdmin\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "NewTrabajador",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Post\",\n    \"apellidos\": \"Man\",\n    \"informacion\": \"Becario en pruebas\",\n    \"telefono\": \"486\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/trabajadores"
+			},
+			"response": []
+		},
+		{
+			"name": "NewEmpresa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"PostmanApi\",\n    \"descripcion\": \"Testea aqui tus APIs\",\n    \"telefono\": \"485\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/empresas"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUsuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/usuarios/3"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteTrabajador",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/trabajadores/2"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEmpresa",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/v1/data-api/empresas/2"
+			},
+			"response": []
+		},
+		{
+			"name": "PutUsuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id_usuario\": 2,\n    \"nom_usuario\": \"usuario1 MOD2\",\n    \"correo\": \"u@a.com\",\n    \"contrasenia\": \"password\",\n    \"rutapfp\": \"\",\n    \"esAdmin\": false,\n    \"empresa\": {\n        \"id_empresa\": 1,\n        \"nombre\": \"Oracle\",\n        \"descripcion\": \"Empresa de desarrollo de software\",\n        \"telefono\": \"+408\"\n    }\n}\n//Esto se carga al trabajador o empresa, se sobreescribe con null lo que no se especifique, si se hace un Put se debe controlar",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/usuarios/2"
+			},
+			"response": []
+		},
+		{
+			"name": "PutTrabajador",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id_trabajador\": 1,\n    \"nombre\": \"Primer Trabajador\",\n    \"apellidos\": \"\",\n    \"informacion\": \"Previamente trabajador\",\n    \"telefono\": \"444\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/trabajadores/1"
+			},
+			"response": []
+		},
+		{
+			"name": "PutEmpresa",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id_empresa\": 2,\n    \"nombre\": \"Ericsson\",\n    \"descripcion\": \"Empresa técnologica\",\n    \"telefono\": \"619\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/empresas/2"
+			},
+			"response": []
+		},
+		{
+			"name": "NewAnuncioTrabajador",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fechaPublicacion\": \"2024-12-15\",\r\n    \"descripcion\": \"Esto es un anuncio de un Trabajador\",          \r\n    \"trabajador\":{\r\n        \"id_trabajador\": 25,\r\n        \"nombre\": \"Dario\",\r\n        \"apellidos\": \"Guiles\",\r\n        \"informacion\": \"Usuario de Prueba\",\r\n        \"telefono\": \"666666666\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/anunciotrabajadores"
+			},
+			"response": []
+		},
+		{
+			"name": "NewAnuncioEmpresa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"descripcion\": \"Oferta de empleo para desarrollador\",\r\n  \"fechaInicio\": \"2025-12-15\",\r\n  \"fechaFin\": null,\r\n  \"empresa\": { \"id_empresa\": 16 }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/anuncioempresa"
+			},
+			"response": []
+		},
+		{
+			"name": "Register UsuTrabajador",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nomUsuario\": \"darioGuiles\",\r\n  \"correo\": \"dario@mmail.com\",\r\n  \"contrasenia\": \"Prueba2468\",\r\n  \"rutapfp\": \"\",\r\n  \"esAdmin\": false,\r\n  \"trabajador\": {\r\n    \"nombre\": \"Dario\",\r\n    \"apellidos\": \"Guiles\",\r\n    \"informacion\": \"Usuario de Prueba\",\r\n    \"telefono\": \"666666666\"\r\n  },\r\n  \"empresa\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/usuarios/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Register UsuEmpresa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nomUsuario\": \"PruebaEmpresa\",\r\n    \"correo\": \"dario@mmail.com\",\r\n    \"contrasenia\": \"Prueba2468\",\r\n    \"rutapfp\": \"\",\r\n    \"esAdmin\": false,\r\n    \"trabajador\": null,\r\n    \"empresa\": {\r\n        \"nombre\": \"Ayuntamiento de Mijas\",\r\n        \"descripcion\": \"Ayuntamiento de Mijas\",\r\n        \"telefono\": \"666666666\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/usuarios/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login Usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nomUsuarioCorreo\": \"usuarioPrueba\",\r\n    \"contrasenia\": \"prueba123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/v1/data-api/usuarios/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar Usuario Existe",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/data-api/usuarios/verificar-nombre?nomUsuario=darioPrueba",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"data-api",
+						"usuarios",
+						"verificar-nombre"
+					],
+					"query": [
+						{
+							"key": "nomUsuario",
+							"value": "darioPrueba"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar Mail Existe",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/data-api/usuarios/verificar-correo?correo=nuevo@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"data-api",
+						"usuarios",
+						"verificar-correo"
+					],
+					"query": [
+						{
+							"key": "correo",
+							"value": "nuevo@mail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

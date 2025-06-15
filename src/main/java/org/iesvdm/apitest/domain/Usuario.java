@@ -39,7 +39,6 @@ public class Usuario {
 
     // --> https://www.baeldung.com/jpa-one-to-one#spk-model <--
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
-    @JsonBackReference //Funciona según las pruebas
     @ToString.Exclude
     // *** Esta anotación junto a un MapsId en el otro lado nos permiten ***
     // *** Que la relacion entre ambas sea Identificativa en BBDD ***

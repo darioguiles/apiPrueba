@@ -16,9 +16,9 @@
         <li class=" nav-item" *ngIf="!usuario"><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/login" type="button"><b>Login</b></a></li>
         <li class=" nav-item" *ngIf="!usuario"><a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/register" type="button"><b>Registro</b></a></li>
         <li class="nav-item" *ngIf="usuario?.esAdmin">
-          <button class="btn btn-outline-warning border border-dark rounded-pill" type="button" routerLink="/admin">
-            <b>Vista Admin</b>
-          </button>
+          <a class="btn btn-formp btn-outline-primary border border-dark rounded-pill" routerLink="/admin" type="button">
+            <b>Vista Admin</b></a>
+
         </li>
         <!-- Contenedor de usuario logueado -->
         <div class="d-flex align-items-center" *ngIf="usuario">

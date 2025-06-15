@@ -139,7 +139,7 @@ public class UsuarioController {
         {
             empresa = empresaOptional.get();
         }
-        else {
+        if(trabajadorOptional.isPresent()) {
             trabajador = trabajadorOptional.get();
         }
 
