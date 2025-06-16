@@ -32,22 +32,16 @@
           <p class="card-text">
             <small *ngIf="anuncio.trabajador" class="text-muted">Publicado el: {{ anuncio.fechaPublicacion  | date: 'dd/MM/yyyy HH:mm' }}</small>
             <small *ngIf="anuncio.empresa" class="text-muted">Empieza el: {{ anuncio.fechaInicio  | date: 'dd/MM/yyyy HH:mm' }}</small>
-            <ng-container *ngIf="anuncio.empresa && filtroSeleccionado !== 'empresa'">
-              <ng-container *ngIf="anuncio.fechaFin !== 'Indefinida'; else sinFechaFin">
-                <small class="text-muted"><br>Termina el: {{ anuncio.fechaFin | date: 'dd/MM/yyyy HH:mm' }}</small>
-              </ng-container>
-              <ng-template #sinFechaFin>
-                <small class="text-muted"><br>Termina el: Sin especificar</small>
-              </ng-template>
+            <ng-container *ngIf="anuncio.empresa">
+              <small class="text-muted"><br>
+                Termina el:
+                <ng-container *ngIf="anuncio.fechaFin; else sinFechaFin">
+                  {{ anuncio.fechaFin | date: 'dd/MM/yyyy HH:mm' }}
+                </ng-container>
+                <ng-template #sinFechaFin>Sin especificar</ng-template>
+              </small>
             </ng-container>
-            <ng-container *ngIf="filtroSeleccionado === 'empresa'">
-              <ng-container *ngIf="anuncio.fechaFin && anuncio.fechaFin !== null; else sinFechaFinF">
-                <small class="text-muted"><br>Termina el: {{ anuncio.fechaFin | date: 'dd/MM/yyyy HH:mm' }}</small>
-              </ng-container>
-              <ng-template #sinFechaFinF>
-                <small class="text-muted"><br>Termina el: Sin especificar</small>
-              </ng-template>
-            </ng-container>
+
           </p>
           <div class="d-flex justify-content-around">
           <button class="btn btn-outline-warning btn-sm"  *ngIf="esPropietario(anuncio)" (click)="editarAnuncio(anuncio)">Editar</button>

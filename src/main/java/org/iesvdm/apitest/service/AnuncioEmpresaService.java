@@ -43,8 +43,8 @@ public class AnuncioEmpresaService {
             anuncioMap.put("descripcion", anuncio.getDescripcion());
             anuncioMap.put("cantidadPuestos", anuncio.getCantidadPuestos());
             anuncioMap.put("numAdscritos", anuncio.getNumAdscritos());
-            anuncioMap.put("fechaInicio", anuncio.getFechaInicio() != null ? anuncio.getFechaInicio() : "Indefinida");
-            anuncioMap.put("fechaFin", anuncio.getFechaFin() != null ? anuncio.getFechaFin() : "Indefinida");
+            anuncioMap.put("fechaInicio", anuncio.getFechaInicio() != null ? anuncio.getFechaInicio() : null);
+            anuncioMap.put("fechaFin", anuncio.getFechaFin() != null ? anuncio.getFechaFin() : null );
 
             if (anuncio.getEmpresa() != null) {
                 Map<String, Object> empresaMap = new HashMap<>();

@@ -55,13 +55,13 @@ public class DataInitializer {
 
         // Anuncios trabajador
         for (int i = 1; i <= 2; i++) {
-            AnuncioTrabajador anuncio = new AnuncioTrabajador(0, LocalDateTime.now(), "Anuncio trabajador " + i, trabajador, null);
+            AnuncioTrabajador anuncio = new AnuncioTrabajador(0, LocalDateTime.now().withNano(0), "Anuncio trabajador " + i, trabajador, null);
             anuncioTrabajadorRepository.save(anuncio);
         }
 
         // Anuncios empresa
         for (int i = 1; i <= 2; i++) {
-            AnuncioEmpresa anuncio = new AnuncioEmpresa(0, "Oferta de empleo " + i, 8 + i, 0, LocalDateTime.now(), null, empresa, null);
+            AnuncioEmpresa anuncio = new AnuncioEmpresa(0, "Oferta de empleo " + i, 8 + i, 0, LocalDateTime.now().withNano(0), null, empresa, null);
             anuncioEmpresaRepository.save(anuncio);
         }
     }

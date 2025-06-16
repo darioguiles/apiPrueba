@@ -151,6 +151,8 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
           Swal.fire('Eliminado', 'El usuario fue eliminado correctamente.', 'success');
           this.cargarUsuarios();
+        this.cargarAnunciosEmpresa();
+        this.cargarAnunciosTrabajador();
       },
       error: () => {
         Swal.fire('Error', 'No se pudo eliminar el usuario.', 'error');

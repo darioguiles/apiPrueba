@@ -86,6 +86,11 @@ public class AnuncioEmpresaController {
     }
     @PutMapping("/{id}")
     public AnuncioEmpresa replaceTrabajador(@PathVariable("id") Long id, @RequestBody AnuncioEmpresa anuncioEmpresa) {
+
+        if(anuncioEmpresa.getFechaFin().equals("Indefinida"))
+        {
+            anuncioEmpresa.setFechaFin(null);
+        }
         return this.anuncioEmpresaService.replace(id, anuncioEmpresa);
     }
     @ResponseBody
